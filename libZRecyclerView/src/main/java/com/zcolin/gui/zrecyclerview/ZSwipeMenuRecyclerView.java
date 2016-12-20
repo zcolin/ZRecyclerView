@@ -13,7 +13,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.animation.Interpolator;
 
-import com.zcolin.gui.R;
 import com.zcolin.gui.zrecyclerview.swipemenu.SwipeMenuLayout;
 import com.zcolin.gui.zrecyclerview.swipemenu.SwipeMenuRecyclerView;
 

@@ -25,7 +25,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.zcolin.gui.R;
 import com.zcolin.gui.zrecyclerview.loadmorefooter.DefLoadMoreFooter;
 import com.zcolin.gui.zrecyclerview.loadmorefooter.ILoadMoreFooter;
 import com.zcolin.gui.zrecyclerview.swiperefreshlayout.SwipeRefreshLayout;
