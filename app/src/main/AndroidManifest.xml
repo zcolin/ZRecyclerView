@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    package="com.zcolin.zrecyclerdemo"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <application
+        android:name="com.zcolin.zrecyclerdemo.App"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name="com.zcolin.zrecyclerdemo.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".EmptyViewLayoutActivity"/>
+        <activity android:name="com.zcolin.zrecyclerdemo.SwipeMenuLayoutActivity"/>
+        <activity android:name="com.zcolin.zrecyclerdemo.ScrollViewLayoutActivity"/>
+        <activity android:name="com.zcolin.zrecyclerdemo.GridLayoutActivity"/>
+        <activity android:name="com.zcolin.zrecyclerdemo.StaggeredLayoutActivity"/>
+        <activity android:name="com.zcolin.zrecyclerdemo.DecorationActivity"/>
+    </application>
+
+</manifest>
