@@ -17,7 +17,7 @@ Demo
 app的build.gradle中添加
 ```
 dependencies {
-    compile 'com.github.zcolin:ZRecyclerView:1.0.0'
+    compile 'com.github.zcolin:ZRecyclerView:1.0.1'
 }
 ```
 工程的build.gradle中添加
