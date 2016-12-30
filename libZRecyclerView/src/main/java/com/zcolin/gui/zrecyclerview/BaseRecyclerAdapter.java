@@ -49,7 +49,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     /**
      * 追加条目数据
      */
-    public void addDatas(ArrayList<T> datas) {
+    public void addDatas(List<T> datas) {
         if (datas != null) {
             listData.addAll(datas);
         }
