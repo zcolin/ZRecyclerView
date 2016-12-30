@@ -463,10 +463,10 @@ public class ZRecyclerView extends FrameLayout {
             public void run() {
                 if (isRefreshEnabled) {
                     mSwipeRefreshLayout.setRefreshing(true);
+                    refresh();
                 }
             }
         }, 300);
-        refresh();
     }
 
     /**
