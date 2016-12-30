@@ -517,7 +517,10 @@ public class ZRecyclerView extends FrameLayout {
         }
 
         isLoadingData = false;
-        loadMoreFooter.onComplete();
+        //已经设置了nomore了，就不在用完成状态覆盖nomore状态
+        if (!isNoMore) {
+            loadMoreFooter.onComplete();
+        }
     }
 
     /**
