@@ -295,6 +295,7 @@ public class ZRecyclerView extends FrameLayout {
      * 设置下拉刷新是否可用
      */
     public ZRecyclerView setIsRefreshEnabled(boolean enabled) {
+        mSwipeRefreshLayout.setEnabled(enabled);
         isRefreshEnabled = enabled;
         return this;
     }
