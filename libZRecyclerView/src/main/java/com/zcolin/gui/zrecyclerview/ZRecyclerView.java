@@ -514,7 +514,6 @@ public class ZRecyclerView extends FrameLayout {
         if (isRefreshing) {
             isRefreshing = false;
             setRefreshing(false);
-            setNoMore(false);
         }
 
         isLoadingData = false;
