@@ -30,6 +30,8 @@ import com.zcolin.gui.zrecyclerview.loadmorefooter.ILoadMoreFooter;
 import com.zcolin.gui.zrecyclerview.swiperefreshlayout.SwipeRefreshLayout;
 import com.zcolin.gui.zrecyclerview.swiperefreshlayout.ZSwipeRefreshLayout;
 
+import java.util.List;
+
 
 /**
  * <p/>
@@ -529,10 +531,28 @@ public class ZRecyclerView extends FrameLayout {
      * 一般做法是在{@link PullLoadMoreListener#onRefresh()}中设置{@link #setNoMore(boolean)}为true;
      */
     public void setNoMore(boolean noMore) {
+        setNoMore(noMore, 0, 1);
+    }
+
+    /**
+     * 设置是否已加载全部, <br>
+     * 设置之后到底{@link PullLoadMoreListener#onLoadMore()}不会再调用除非再次调用{@link #setNoMore(boolean)}为true;
+     * 一般做法是在{@link PullLoadMoreListener#onRefresh()}中设置{@link #setNoMore(boolean)}为true;
+     */
+    public void setNoMore(boolean noMore, int minShowItem, List<?> data) {
+        setNoMore(noMore, minShowItem, data == null ? 0 : data.size());
+    }
+
+    /**
+     * 设置是否已加载全部, <br>
+     * 设置之后到底{@link PullLoadMoreListener#onLoadMore()}不会再调用除非再次调用{@link #setNoMore(boolean)}为true;
+     * 一般做法是在{@link PullLoadMoreListener#onRefresh()}中设置{@link #setNoMore(boolean)}为true;
+     */
+    public void setNoMore(boolean noMore, int minShowItem, int dataSize) {
         isLoadingData = false;
         isNoMore = noMore;
-        //数据大于1屏
-        if (isNoMore && mWrapAdapter != null && mWrapAdapter.getItemCount() > mRecyclerView.getChildCount() && mRecyclerView.getChildCount() > 0) {
+
+        if (isNoMore && dataSize > minShowItem) {
             loadMoreFooter.onNoMore();
         } else {
             loadMoreFooter.onComplete();
