@@ -532,7 +532,7 @@ public class ZRecyclerView extends FrameLayout {
         isLoadingData = false;
         isNoMore = noMore;
         //数据大于1屏
-        if (isNoMore && mWrapAdapter != null && mWrapAdapter.getItemCount() > mRecyclerView.getChildCount()) {
+        if (isNoMore && mWrapAdapter != null && mWrapAdapter.getItemCount() > mRecyclerView.getChildCount() && mRecyclerView.getChildCount() > 0) {
             loadMoreFooter.onNoMore();
         } else {
             loadMoreFooter.onComplete();
