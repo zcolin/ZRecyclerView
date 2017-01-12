@@ -531,7 +531,7 @@ public class ZRecyclerView extends FrameLayout {
      * 一般做法是在{@link PullLoadMoreListener#onRefresh()}中设置{@link #setNoMore(boolean)}为true;
      */
     public void setNoMore(boolean noMore) {
-        setNoMore(noMore, 0, 1);
+        setNoMore(noMore, 0, 0);
     }
 
     /**
@@ -552,7 +552,7 @@ public class ZRecyclerView extends FrameLayout {
         isLoadingData = false;
         isNoMore = noMore;
 
-        if (isNoMore && dataSize > minShowItem) {
+        if (isNoMore && dataSize >= minShowItem) {
             loadMoreFooter.onNoMore();
         } else {
             loadMoreFooter.onComplete();
