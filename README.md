@@ -1,7 +1,9 @@
 ZRecyclerViewLib
 =
-### RecyclerView的下拉刷新到底加载的库，使用android自带的SwipeRefreshLayout封装。
+### RecyclerView的下拉刷新到底加载的库，使用android自带的SwipeRefreshLayout封装。同我的另外一个库[PullRecyclerView](https://github.com/zcolin/PullRecyclerView)的接口基本一样，可以做到无缝切换
 
+Feature
+=
 1. 制定自定义样式加载Footer请实现ILoadMoreFooter，参照DefLoadMoreFooter.
 2. 可以设置HeaderView、FooterView、emptypView、下拉样式、加载样式等操作.
 3. 所有设置在ZRecyclerView中操作，不再在Adapter中进行操作.
