@@ -83,10 +83,16 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
         notifyDataSetChanged();
     }
 
+    /**
+     * 获取数据集
+     */
+    public ArrayList<T> getDatas() {
+        return listData;
+    }
+
     public T getItem(int position) {
         return listData.get(position);
     }
-
 
     @Override
     public int getItemCount() {
