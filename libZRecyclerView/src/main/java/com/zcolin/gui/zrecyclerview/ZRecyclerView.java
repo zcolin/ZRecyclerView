@@ -49,9 +49,9 @@ public class ZRecyclerView extends FrameLayout {
     private boolean isNoMore      = false;
     private boolean isRefreshing  = false;
     private boolean isLoadingData = false;
-    private BaseRecyclerAdapter.OnItemClickListener itemClickListener;
+    private BaseRecyclerAdapter.OnItemClickListener     itemClickListener;
     private BaseRecyclerAdapter.OnItemLongClickListener itemLongClickListener;
-    
+
     private WrapperRecyclerAdapter mWrapAdapter;
     private ILoadMoreFooter        loadMoreFooter;
     private RecyclerView           mRecyclerView;
@@ -667,12 +667,12 @@ public class ZRecyclerView extends FrameLayout {
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemInserted(headerView == null ? positionStart : positionStart + 1);
+            mWrapAdapter.notifyItemRangeInserted(headerView == null ? positionStart : positionStart + 1, itemCount);
         }
 
         @Override
         public void onItemRangeRemoved(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRemoved(headerView == null ? positionStart : positionStart + 1);
+            mWrapAdapter.notifyItemRangeRemoved(headerView == null ? positionStart : positionStart + 1, itemCount);
         }
 
         @Override
