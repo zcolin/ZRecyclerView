@@ -24,7 +24,8 @@ import java.util.List;
 public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRecyclerAdapter.CommonHolder> {
 
     private ArrayList<T> listData = new ArrayList<>();
-    private OnItemClickListener<T> itemClickListener;
+    private OnItemClickListener<T>     itemClickListener;
+    private OnItemLongClickListener<T> itemLongClickListener;
 
     /**
      * 获取布局ID
@@ -44,6 +45,10 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 
     public void setOnItemClickListener(OnItemClickListener<T> li) {
         itemClickListener = li;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener<T> li) {
+        itemLongClickListener = li;
     }
 
     /**
@@ -118,6 +123,15 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
             });
         }
 
+        if (itemLongClickListener != null) {
+            viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return itemLongClickListener.onItemLongClick(viewHolder.itemView, position, data);
+                }
+            });
+        }
+
         setUpData(viewHolder, position, getItemViewType(position), data);
     }
 
@@ -155,5 +169,9 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 
     public interface OnItemClickListener<T> {
         void onItemClick(View covertView, int position, T data);
+    }
+
+    public interface OnItemLongClickListener<T> {
+        boolean onItemLongClick(View covertView, int position, T data);
     }
 }

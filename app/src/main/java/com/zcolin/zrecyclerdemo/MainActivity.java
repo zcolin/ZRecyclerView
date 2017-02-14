@@ -77,7 +77,18 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, DecorationActivity.class);
                     startActivity(intent);
                 }
+            }
+        });
 
+        recyclerView.setOnItemLongClickListener(new BaseRecyclerAdapter.OnItemLongClickListener<String>() {
+            @Override
+            public boolean onItemLongClick(View covertView, int position, String data) {
+                recyclerAdapter.getDatas()
+                               .remove(position);
+                recyclerAdapter.notifyItemRemoved(position);
+                recyclerAdapter.notifyItemRangeChanged(position, recyclerAdapter.getDatas()
+                                                                                .size() - position);
+                return true;
             }
         });
 
