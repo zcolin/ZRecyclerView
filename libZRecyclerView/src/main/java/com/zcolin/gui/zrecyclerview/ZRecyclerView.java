@@ -251,7 +251,9 @@ public class ZRecyclerView extends FrameLayout {
      */
     public ZRecyclerView setHeaderView(View headerView) {
         this.headerView = headerView;
-        this.headerView.setTag("reservedView");
+        if (headerView != null) {
+            this.headerView.setTag("reservedView");
+        }
         return this;
     }
 
@@ -268,7 +270,9 @@ public class ZRecyclerView extends FrameLayout {
      */
     public ZRecyclerView setFooterView(View footerView) {
         this.footerView = footerView;
-        this.footerView.setTag("reservedView");
+        if (footerView != null) {
+            this.footerView.setTag("reservedView");
+        }
         return this;
 
     }
