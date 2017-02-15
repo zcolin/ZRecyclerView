@@ -624,9 +624,11 @@ public class ZRecyclerView extends FrameLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        RecyclerView.Adapter<?> adapter = mRecyclerView.getAdapter();
-        if (adapter != null && !hasRegisterEmptyObserver && mEmptyDataObserver != null) {
-            adapter.registerAdapterDataObserver(mEmptyDataObserver);
+        
+        /*设置emptyView的监听者*/
+        if (mWrapAdapter != null && mWrapAdapter.getAdapter() != null && !hasRegisterEmptyObserver && mEmptyDataObserver != null) {
+            mWrapAdapter.getAdapter()
+                        .registerAdapterDataObserver(mEmptyDataObserver);
             hasRegisterEmptyObserver = true;
         }
     }
@@ -634,10 +636,11 @@ public class ZRecyclerView extends FrameLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        
         /*注销监听者*/
-        RecyclerView.Adapter<?> adapter = mRecyclerView.getAdapter();
-        if (adapter != null && hasRegisterEmptyObserver) {
-            adapter.unregisterAdapterDataObserver(mEmptyDataObserver);
+        if (mWrapAdapter != null && mWrapAdapter.getAdapter() != null && hasRegisterEmptyObserver) {
+            mWrapAdapter.getAdapter()
+                        .unregisterAdapterDataObserver(mEmptyDataObserver);
             hasRegisterEmptyObserver = false;
         }
     }
