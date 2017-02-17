@@ -26,6 +26,8 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     private ArrayList<T> listData = new ArrayList<>();
     private OnItemClickListener<T>     itemClickListener;
     private OnItemLongClickListener<T> itemLongClickListener;
+    private long minClickIntervaltime = 100; //ITEM点击的最小间隔
+    private long mLastClickTime;//上次点击时间
 
     /**
      * 获取布局ID
@@ -33,6 +35,33 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
      * @return 布局Id,  ex:R.layout.listitem_***
      */
     public abstract int getItemLayoutId(int viewType);
+
+    /**
+     * 客户自己定义的GridLayoutManager的item需要跨的行数
+     *
+     * @return GridLayoutManager 0为占满，其他为占的具体行数,最多为占满
+     */
+    public int getGridItemSpanCount(int position, int viewType) {
+        return 1;
+    }
+
+    /**
+     * 客户自己定义的StaggeredLayoutManager的item是否需要占满
+     *
+     * @return true为占满, false为1行
+     */
+    public boolean getIsStaggeredItemFullSpan(int position, int viewType) {
+        return false;
+    }
+
+    /**
+     * 设置Item点击的最小间隔
+     *
+     * @param minClickIntervaltime millionSeconds
+     */
+    public void setItemMinClickIntervalTime(long minClickIntervaltime) {
+        this.minClickIntervaltime = minClickIntervaltime;
+    }
 
     /**
      * 设置显示数据,替代getView，在此函数中进行赋值操作
@@ -69,14 +98,6 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
         if (datas != null) {
             listData.addAll(datas);
         }
-        notifyDataSetChanged();
-    }
-
-    /**
-     * 追加单条数据
-     */
-    public void addData(T data) {
-        listData.add(data);
         notifyDataSetChanged();
     }
 
@@ -118,7 +139,11 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.onItemClick(viewHolder.itemView, position, data);
+                    long curTime = System.currentTimeMillis();
+                    if (curTime - mLastClickTime > minClickIntervaltime) {
+                        mLastClickTime = curTime;
+                        itemClickListener.onItemClick(viewHolder.itemView, position, data);
+                    }
                 }
             });
         }
@@ -127,7 +152,12 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
             viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    return itemLongClickListener.onItemLongClick(viewHolder.itemView, position, data);
+                    long curTime = System.currentTimeMillis();
+                    if (curTime - mLastClickTime > minClickIntervaltime) {
+                        mLastClickTime = curTime;
+                        return itemLongClickListener.onItemLongClick(viewHolder.itemView, position, data);
+                    }
+                    return false;
                 }
             });
         }

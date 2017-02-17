@@ -25,6 +25,7 @@
         <activity android:name="com.zcolin.zrecyclerdemo.ScrollViewLayoutActivity"/>
         <activity android:name="com.zcolin.zrecyclerdemo.GridLayoutActivity"/>
         <activity android:name="com.zcolin.zrecyclerdemo.StaggeredLayoutActivity"/>
+        <activity android:name="com.zcolin.zrecyclerdemo.MultiTypeLayoutActivity"/>
         <activity android:name="com.zcolin.zrecyclerdemo.DecorationActivity"/>
     </application>
 

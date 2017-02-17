@@ -3,53 +3,51 @@
  *   author   colin
  *   company  fosung
  *   email    wanglin2046@126.com
- *   date     16-12-19 下午5:22
+ *   date     17-2-17 下午12:09
  * ********************************************************
  */
 
 package com.zcolin.zrecyclerdemo;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.zcolin.gui.zrecyclerview.BaseRecyclerAdapter;
-import com.zcolin.gui.zrecyclerview.ZRecycleViewDivider;
 import com.zcolin.gui.zrecyclerview.ZRecyclerView;
-import com.zcolin.gui.zrecyclerview.ZSwipeMenuRecyclerView;
-import com.zcolin.zrecyclerdemo.adapter.SwipeMenuRecyclerAdapter;
+import com.zcolin.zrecyclerdemo.adapter.ZRecyclerMultiTypeAdapter;
 
 import java.util.ArrayList;
 
-public class SwipeMenuLayoutActivity extends AppCompatActivity {
+public class MultiTypeLayoutActivity extends AppCompatActivity {
 
-    private ZSwipeMenuRecyclerView   recyclerView;
-    private SwipeMenuRecyclerAdapter recyclerAdapter;
+    private ZRecyclerView             recyclerView;
+    private ZRecyclerMultiTypeAdapter recyclerAdapter;
     private int mPage = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_swipemenu);
+        setContentView(R.layout.activity_main);
 
-        recyclerView = (ZSwipeMenuRecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = (ZRecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setGridLayout(false, 3);//默认已设置LinearLayoutManager
         recyclerView.setOnPullLoadMoreListener(new PullLoadMoreListener());
-        recyclerView.addItemDecoration(new ZRecycleViewDivider(this, LinearLayout.HORIZONTAL, 1, Color.GREEN));
-        recyclerView.getLoadMoreFooterView().setBackgroundColor(Color.BLUE);
-        recyclerView.setLoadMoreTextColor(Color.WHITE);
+        recyclerView.setEmptyView(this, R.layout.view_recycler_empty);
+        recyclerView.setHeaderView(this, R.layout.view_recyclerheader);
+
         recyclerView.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<String>() {
             @Override
             public void onItemClick(View covertView, int position, String data) {
-                Toast.makeText(SwipeMenuLayoutActivity.this, data, Toast.LENGTH_SHORT)
+                Toast.makeText(MultiTypeLayoutActivity.this, data, Toast.LENGTH_SHORT)
                      .show();
 
             }
         });
 
+        notifyData(new ArrayList<String>(), false);
         recyclerView.refreshWithPull();
     }
 
@@ -58,7 +56,7 @@ public class SwipeMenuLayoutActivity extends AppCompatActivity {
      */
     public void notifyData(ArrayList<String> list, boolean isClear) {
         if (recyclerAdapter == null) {
-            recyclerAdapter = new SwipeMenuRecyclerAdapter();
+            recyclerAdapter = new ZRecyclerMultiTypeAdapter();
             recyclerAdapter.addDatas(list);
             recyclerView.setAdapter(recyclerAdapter);
         } else {

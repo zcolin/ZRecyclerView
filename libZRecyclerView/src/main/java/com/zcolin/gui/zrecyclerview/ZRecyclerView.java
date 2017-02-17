@@ -51,7 +51,8 @@ public class ZRecyclerView extends FrameLayout {
     private boolean isLoadingData = false;
     private BaseRecyclerAdapter.OnItemClickListener     itemClickListener;
     private BaseRecyclerAdapter.OnItemLongClickListener itemLongClickListener;
-
+    private long minClickIntervaltime = 100; //ITEM点击的最小间隔
+    
     private WrapperRecyclerAdapter mWrapAdapter;
     private ILoadMoreFooter        loadMoreFooter;
     private RecyclerView           mRecyclerView;
@@ -130,15 +131,33 @@ public class ZRecyclerView extends FrameLayout {
      * 此处设置OnItemLongClickListener是调用的{@link BaseRecyclerAdapter#setOnItemLongClickListener(BaseRecyclerAdapter.OnItemLongClickListener)}，
      * 此处的泛型类型必须和{@link BaseRecyclerAdapter}的相同
      */
-    public <T> void setOnItemLongClickListener(BaseRecyclerAdapter.OnItemLongClickListener<T> li) {
+    public <T> ZRecyclerView setOnItemLongClickListener(BaseRecyclerAdapter.OnItemLongClickListener<T> li) {
         itemLongClickListener = li;
         if (mWrapAdapter != null) {
             if (mWrapAdapter.getAdapter() instanceof BaseRecyclerAdapter) {
                 ((BaseRecyclerAdapter) mWrapAdapter.getAdapter()).setOnItemLongClickListener(li);
             } else {
-                throw new IllegalArgumentException("adapter 必须继承BaseRecyclerAdapter 才能使用setOnItemClickListener");
+                throw new IllegalArgumentException("adapter 必须继承BaseRecyclerAdapter 才能使用setOnItemLongClickListener");
             }
         }
+        return this;
+    }
+
+    /**
+     * 设置Item点击的最小间隔
+     *
+     * @param minClickIntervaltime millionSeconds
+     */
+    public ZRecyclerView setItemMinClickIntervalTime(long minClickIntervaltime) {
+        this.minClickIntervaltime = minClickIntervaltime;
+        if (mWrapAdapter != null) {
+            if (mWrapAdapter.getAdapter() instanceof BaseRecyclerAdapter) {
+                ((BaseRecyclerAdapter) mWrapAdapter.getAdapter()).setItemMinClickIntervalTime(minClickIntervaltime);
+            } else {
+                throw new IllegalArgumentException("adapter 必须继承BaseRecyclerAdapter 才能使用setItemMinClickIntervalTime");
+            }
+        }
+        return this;
     }
 
     /**
@@ -608,6 +627,7 @@ public class ZRecyclerView extends FrameLayout {
 
         setOnItemClickListener(itemClickListener);
         setOnItemLongClickListener(itemLongClickListener);
+        setItemMinClickIntervalTime(minClickIntervaltime);
         if (!hasRegisterEmptyObserver) {
             adapter.registerAdapterDataObserver(mEmptyDataObserver);
             hasRegisterEmptyObserver = true;

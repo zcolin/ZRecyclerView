@@ -101,6 +101,7 @@ public class GridLayoutActivity extends AppCompatActivity {
         public void onRefresh() {
             mPage = 1;
             requestData(mPage);
+            recyclerView.setNoMore(false);
         }
 
         @Override
