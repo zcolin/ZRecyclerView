@@ -273,6 +273,11 @@ public class ZRecyclerView extends FrameLayout {
         if (headerView != null) {
             this.headerView.setTag("reservedView");
         }
+
+        if (mWrapAdapter != null) {
+            mWrapAdapter.setHeaderView(headerView);
+        }
+        
         return this;
     }
 
