@@ -27,6 +27,8 @@
         <activity android:name="com.zcolin.zrecyclerdemo.StaggeredLayoutActivity"/>
         <activity android:name="com.zcolin.zrecyclerdemo.MultiTypeLayoutActivity"/>
         <activity android:name="com.zcolin.zrecyclerdemo.DecorationActivity"/>
+        <activity android:name="com.zcolin.zrecyclerdemo.DesignSupportActivity"/>
+        
     </application>
 
 </manifest>
