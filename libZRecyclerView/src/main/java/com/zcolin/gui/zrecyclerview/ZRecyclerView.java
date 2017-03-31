@@ -725,8 +725,10 @@ public class ZRecyclerView extends FrameLayout {
                     if (headerView != null && mEmptyViewContainer.getLayoutParams() instanceof MarginLayoutParams) {
                         if (headerView.getHeight() == 0 && Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
                             headerView.measure(0,0);
+                            ((MarginLayoutParams) mEmptyViewContainer.getLayoutParams()).topMargin = headerView.getMeasuredHeight();
+                        }else {
+                            ((MarginLayoutParams) mEmptyViewContainer.getLayoutParams()).topMargin = headerView.getHeight();
                         }
-                        ((MarginLayoutParams) mEmptyViewContainer.getLayoutParams()).topMargin = headerView.getHeight();
                     }
                 } else {
                     mEmptyViewContainer.setVisibility(View.GONE);
