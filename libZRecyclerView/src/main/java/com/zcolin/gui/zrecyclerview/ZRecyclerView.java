@@ -10,6 +10,7 @@
 package com.zcolin.gui.zrecyclerview;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -722,6 +723,9 @@ public class ZRecyclerView extends FrameLayout {
 
                     //使emptyview居中（除headerview之外）
                     if (headerView != null && mEmptyViewContainer.getLayoutParams() instanceof MarginLayoutParams) {
+                        if (headerView.getHeight() == 0 && Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                            headerView.measure(0,0);
+                        }
                         ((MarginLayoutParams) mEmptyViewContainer.getLayoutParams()).topMargin = headerView.getHeight();
                     }
                 } else {
