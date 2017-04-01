@@ -252,14 +252,22 @@ public class ZRecyclerView extends FrameLayout {
      * 获取设置的HeaderView的外层LinearLayout
      */
     public View getHeaderLayout() {
-        return mWrapAdapter.getHeaderLayout();
+        if (mWrapAdapter == null) {
+            return null;
+        } else {
+            return mWrapAdapter.getHeaderLayout();
+        }
     }
 
     /**
      * 获取设置的FooterView的外层LinearLayout
      */
     public View getFooterLayout() {
-        return mWrapAdapter.getFooterLayout();
+        if (mWrapAdapter == null) {
+            return null;
+        } else {
+            return mWrapAdapter.getFooterLayout();
+        }
     }
 
     /**
@@ -292,7 +300,7 @@ public class ZRecyclerView extends FrameLayout {
             if (listHeaderView == null) {
                 listHeaderView = new ArrayList<>();
             }
-            
+
             index = index < 0 ? listHeaderView.size() : index;
             index = index > listHeaderView.size() ? listHeaderView.size() : index;
             headerView.setTag(R.id.srv_reserved_ivew, "reservedView");
@@ -336,7 +344,7 @@ public class ZRecyclerView extends FrameLayout {
             if (listFooterView == null) {
                 listFooterView = new ArrayList<>();
             }
-            
+
             index = index < 0 ? listFooterView.size() : index;
             index = index > listFooterView.size() ? listFooterView.size() : index;
             footerView.setTag(R.id.srv_reserved_ivew, "reservedView");
