@@ -13,7 +13,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zcolin.gui.zrecyclerview.BaseRecyclerAdapter;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ZRecyclerView    recyclerView;
     private ZRecyclerAdapter recyclerAdapter;
+    private View             headerView2;
     private int mPage = 1;
 
     @Override
@@ -42,8 +45,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setEmptyView(this, R.layout.view_recycler_empty);
 
         //设置HeaderView和footerView
-        recyclerView.setHeaderView(this, R.layout.view_recyclerheader);
-        recyclerView.setFooterView(this, R.layout.view_recyclerfooter);
+        recyclerView.addHeaderView(this, R.layout.view_recyclerheader);
+        headerView2 = LayoutInflater.from(this)
+                                    .inflate(R.layout.view_recyclerheader, null);
+        ((TextView) headerView2.findViewById(R.id.textView)).setText("HEDER 2");
+        recyclerView.addHeaderView(headerView2);
+        recyclerView.addFooterView(this, R.layout.view_recyclerfooter);
 
         //recyclerView.setLoadMoreProgressView(view);
         //recyclerView.setIsShowNoMore(false);      //不显示已加载全部
@@ -82,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
                 } else if (position == 7) {
                     Intent intent = new Intent(MainActivity.this, DesignSupportActivity.class);
                     startActivity(intent);
+                } else if (position == 8) {
+                    recyclerView.removeHeaderView(headerView2);
                 }
             }
         });
@@ -159,6 +168,8 @@ public class MainActivity extends AppCompatActivity {
                 dataList.add("Decoration");
             } else if (i == 7) {
                 dataList.add("DesignSupportActivity");
+            }  else if (i == 8) {
+                dataList.add("移除Header2");
             } else {
                 dataList.add(String.format("第%d条数据", i));
             }

@@ -36,7 +36,7 @@ public class MultiTypeLayoutActivity extends AppCompatActivity {
         recyclerView.setGridLayout(false, 3);//默认已设置LinearLayoutManager
         recyclerView.setOnPullLoadMoreListener(new PullLoadMoreListener());
         recyclerView.setEmptyView(this, R.layout.view_recycler_empty);
-        recyclerView.setHeaderView(this, R.layout.view_recyclerheader);
+        recyclerView.addHeaderView(this, R.layout.view_recyclerheader);
 
         recyclerView.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<String>() {
             @Override

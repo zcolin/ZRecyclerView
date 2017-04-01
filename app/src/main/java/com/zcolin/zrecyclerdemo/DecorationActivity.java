@@ -31,8 +31,8 @@ public class DecorationActivity extends AppCompatActivity {
 
         recyclerView = (ZRecyclerView) findViewById(R.id.recycler_view);
         recyclerView.addDefaultItemDecoration();
-        recyclerView.setHeaderView(this, R.layout.view_recyclerheader);
-        recyclerView.setFooterView(this, R.layout.view_recyclerfooter);
+        recyclerView.addHeaderView(this, R.layout.view_recyclerheader);
+        recyclerView.addFooterView(this, R.layout.view_recyclerfooter);
         recyclerView.setOnPullLoadMoreListener(new PullLoadMoreListener());
 
         notifyData(new ArrayList<String>(), false);

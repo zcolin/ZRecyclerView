@@ -13,9 +13,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.zcolin.gui.zrecyclerview.loadmorefooter.DefLoadMoreFooter;
 import com.zcolin.gui.zrecyclerview.loadmorefooter.ILoadMoreFooter;
+
+import java.util.ArrayList;
 
 
 /**
@@ -26,8 +29,10 @@ class WrapperRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public static final  int TYPE_FOOTER          = 100003;
     private static final int TYPE_LOADMORE_FOOTER = 100004;
 
-    private View            headerView;
-    private View            footerView;
+    private LinearLayout mHeaderLayout;
+    private LinearLayout mFooterLayout;
+    private LinearLayout mCopyHeaderLayout = null;
+    private LinearLayout mCopyFooterLayout = null;
     private ILoadMoreFooter loadMoreFooter;
     private boolean isLoadMoreEnabled = true;//设置到底加载是否可用
 
@@ -44,15 +49,129 @@ class WrapperRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return adapter;
     }
 
-    public WrapperRecyclerAdapter setHeaderView(View headerView) {
-        this.headerView = headerView;
+    public LinearLayout getHeaderLayout() {
+        return mHeaderLayout;
+    }
+
+    public LinearLayout getFooterLayout() {
+        return mFooterLayout;
+    }
+
+    public WrapperRecyclerAdapter setHeaderViews(ArrayList<View> listView) {
+        if (mHeaderLayout != null) {
+            mHeaderLayout.removeAllViews();
+        }
+
+        if (listView != null) {
+            for (View view : listView) {
+                addHeaderViewWithoutNotify(view, -1);
+            }
+            adapter.notifyDataSetChanged();
+        } else {
+            removeAllHeaderView();
+        }
         return this;
     }
 
-    public WrapperRecyclerAdapter setFooterView(View footerView) {
-        this.footerView = footerView;
+    public WrapperRecyclerAdapter addHeaderView(View header, int index) {
+        addHeaderViewWithoutNotify(header, index);
+        adapter.notifyDataSetChanged();
         return this;
+    }
 
+    public WrapperRecyclerAdapter addHeaderViewWithoutNotify(View header, int index) {
+        if (mHeaderLayout == null) {
+            if (mCopyHeaderLayout == null) {
+                mHeaderLayout = new LinearLayout(header.getContext());
+                mHeaderLayout.setOrientation(LinearLayout.VERTICAL);
+                mHeaderLayout.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
+                mCopyHeaderLayout = mHeaderLayout;
+            } else {
+                mHeaderLayout = mCopyHeaderLayout;
+            }
+        }
+        index = index >= mHeaderLayout.getChildCount() ? -1 : index;
+        mHeaderLayout.addView(header, index);
+        return this;
+    }
+
+
+    public WrapperRecyclerAdapter setFooterViews(ArrayList<View> listView) {
+        if (mFooterLayout != null) {
+            mFooterLayout.removeAllViews();
+        }
+
+        if (listView != null) {
+            for (View view : listView) {
+                addFooterViewWithoutNotify(view, -1);
+            }
+            adapter.notifyDataSetChanged();
+        } else {
+            removeAllFooterView();
+        }
+        return this;
+    }
+
+    public WrapperRecyclerAdapter addFooterView(View footer, int index) {
+        addFooterViewWithoutNotify(footer, index);
+        adapter.notifyDataSetChanged();
+        return this;
+    }
+
+    public WrapperRecyclerAdapter addFooterViewWithoutNotify(View footer, int index) {
+        if (mFooterLayout == null) {
+            if (mCopyFooterLayout == null) {
+                mFooterLayout = new LinearLayout(footer.getContext());
+                mFooterLayout.setOrientation(LinearLayout.VERTICAL);
+                mFooterLayout.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
+                mCopyFooterLayout = mFooterLayout;
+            } else {
+                mFooterLayout = mCopyFooterLayout;
+            }
+        }
+        index = index >= mFooterLayout.getChildCount() ? -1 : index;
+        mFooterLayout.addView(footer, index);
+        return this;
+    }
+
+    public void removeHeaderView(View header) {
+        if (mHeaderLayout == null)
+            return;
+
+        mHeaderLayout.removeView(header);
+        if (mHeaderLayout.getChildCount() == 0) {
+            mHeaderLayout = null;
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    public void removeFooterView(View footer) {
+        if (mFooterLayout == null)
+            return;
+
+        mFooterLayout.removeView(footer);
+        if (mFooterLayout.getChildCount() == 0) {
+            mFooterLayout = null;
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    public void removeAllHeaderView() {
+        if (mHeaderLayout == null)
+            return;
+
+        mHeaderLayout.removeAllViews();
+        mHeaderLayout = null;
+        adapter.notifyDataSetChanged();
+    }
+
+    public void removeAllFooterView() {
+        if (mFooterLayout == null)
+            return;
+
+        mFooterLayout.removeAllViews();
+        mFooterLayout = null;
+        adapter.notifyDataSetChanged();
     }
 
     /**
@@ -99,15 +218,15 @@ class WrapperRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      * 获取在数据集中的真实位置，而不是在Recycle中包含Header和Footer的位置
      */
     public int getRealPosition(int position) {
-        return headerView == null ? position : position - 1;
+        return position - getHeaderViewCount();
     }
 
     @Override
     public int getItemCount() {
         int count = adapter.getItemCount();
         count += isLoadMoreEnabled ? 1 : 0;
-        count += headerView == null ? 0 : 1;
-        count += footerView == null ? 0 : 1;
+        count += getHeaderViewCount();
+        count += getFooterViewCount();
         return count;
     }
 
@@ -157,10 +276,10 @@ class WrapperRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
         if (viewType == TYPE_LOADMORE_FOOTER) {
             return new SimpleViewHolder(loadMoreFooter.getFootView());
-        } else if (headerView != null && viewType == TYPE_HEADER) {
-            return new SimpleViewHolder(headerView);
-        } else if (footerView != null && viewType == TYPE_FOOTER) {
-            return new SimpleViewHolder(footerView);
+        } else if (mHeaderLayout != null && viewType == TYPE_HEADER) {
+            return new SimpleViewHolder(mHeaderLayout);
+        } else if (mFooterLayout != null && viewType == TYPE_FOOTER) {
+            return new SimpleViewHolder(mFooterLayout);
         }
 
         return adapter.onCreateViewHolder(parent, viewType);
@@ -184,12 +303,20 @@ class WrapperRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
     public boolean isHeaderView(int position) {
-        return position == 0 && headerView != null;
+        return position == 0 && mHeaderLayout != null;
     }
 
     public boolean isFooterView(int position) {
-        return footerView != null &&
+        return mFooterLayout != null &&
                 ((isLoadMoreEnabled && position == getItemCount() - 2) || (!isLoadMoreEnabled && position == getItemCount() - 1));
+    }
+
+    public int getHeaderViewCount() {
+        return mHeaderLayout == null ? 0 : 1;
+    }
+
+    public int getFooterViewCount() {
+        return mFooterLayout == null ? 0 : 1;
     }
 
     @Override

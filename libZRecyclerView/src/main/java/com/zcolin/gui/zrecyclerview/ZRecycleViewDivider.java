@@ -102,7 +102,7 @@ public class ZRecycleViewDivider extends RecyclerView.ItemDecoration {
             final View child = parent.getChildAt(i);
             //所有header和footer都不画线
             if (child.getTag() != null && child.getTag() instanceof String) {
-                String tag = ((String) child.getTag());
+                String tag = ((String) child.getTag(R.id.srv_reserved_ivew));
                 if ("reservedView".equals(tag)) {
                     continue;
                 }

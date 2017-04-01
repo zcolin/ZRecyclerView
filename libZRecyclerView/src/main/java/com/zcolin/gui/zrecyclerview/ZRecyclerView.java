@@ -31,6 +31,7 @@ import com.zcolin.gui.zrecyclerview.loadmorefooter.ILoadMoreFooter;
 import com.zcolin.gui.zrecyclerview.swiperefreshlayout.SwipeRefreshLayout;
 import com.zcolin.gui.zrecyclerview.swiperefreshlayout.ZSwipeRefreshLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -41,19 +42,21 @@ import java.util.List;
  */
 public class ZRecyclerView extends FrameLayout {
     private PullLoadMoreListener mPullLoadMoreListener;
-    private View                 headerView;
-    private View                 footerView;
+    private ArrayList<View>      listHeaderView;
+    private ArrayList<View>      listFooterView;
     private boolean isRefreshEnabled  = true; //设置下拉刷新是否可用
     private boolean isLoadMoreEnabled = true; //设置到底加载是否可用
     private boolean isShowNoMore      = true; //是否显示 加载全部
 
+    private boolean isAddHeader;//如果在设置adapter之前设置,此变量为false,之后设置,则为true
+    private boolean isAddFooter;//如果在设置adapter之前设置,此变量为false,之后设置,则为true
     private boolean isNoMore      = false;
     private boolean isRefreshing  = false;
     private boolean isLoadingData = false;
     private BaseRecyclerAdapter.OnItemClickListener     itemClickListener;
     private BaseRecyclerAdapter.OnItemLongClickListener itemLongClickListener;
     private long minClickIntervaltime = 100; //ITEM点击的最小间隔
-    
+
     private WrapperRecyclerAdapter mWrapAdapter;
     private ILoadMoreFooter        loadMoreFooter;
     private RecyclerView           mRecyclerView;
@@ -246,68 +249,160 @@ public class ZRecyclerView extends FrameLayout {
     }
 
     /**
+     * 获取设置的HeaderView的外层LinearLayout
+     */
+    public View getHeaderLayout() {
+        return mWrapAdapter.getHeaderLayout();
+    }
+
+    /**
+     * 获取设置的FooterView的外层LinearLayout
+     */
+    public View getFooterLayout() {
+        return mWrapAdapter.getFooterLayout();
+    }
+
+    /**
+     * 设置自定义的HeaderView
+     */
+    public ZRecyclerView addHeaderView(View headerView) {
+        return addHeaderView(headerView, -1);
+    }
+
+    /**
+     * 设置自定义的HeaderView
+     */
+    public ZRecyclerView addHeaderView(Context context, int headerViewLayoutId) {
+        return addHeaderView(context, headerViewLayoutId, -1);
+    }
+
+    /**
+     * 设置自定义的HeaderView
+     */
+    public ZRecyclerView addHeaderView(Context context, int headerViewLayoutId, int index) {
+        return addHeaderView(LayoutInflater.from(context)
+                                           .inflate(headerViewLayoutId, null), index);
+    }
+
+    /**
+     * 设置自定义的HeaderView
+     */
+    public ZRecyclerView addHeaderView(View headerView, int index) {
+        if (listHeaderView == null) {
+            listHeaderView = new ArrayList<>();
+        }
+
+        if (headerView != null) {
+            index = index < 0 ? listHeaderView.size() : index;
+            index = index > listHeaderView.size() ? listHeaderView.size() : index;
+            headerView.setTag(R.id.srv_reserved_ivew, "reservedView");
+            listHeaderView.add(index, headerView);
+
+            if (mWrapAdapter != null) {
+                mWrapAdapter.addHeaderView(headerView, index);
+                isAddHeader = true;
+            }
+        }
+        return this;
+    }
+
+    /**
+     * 设置自定义的FooterView
+     */
+    public ZRecyclerView addFooterView(View footerView) {
+        return addFooterView(footerView, -1);
+    }
+
+    /**
+     * 设置自定义的FooterView
+     */
+    public ZRecyclerView addFooterView(Context context, int footerViewLayoutId) {
+        return addFooterView(context, footerViewLayoutId, -1);
+    }
+
+    /**
+     * 设置自定义的FooterView
+     */
+    public ZRecyclerView addFooterView(Context context, int footerViewLayoutId, int index) {
+        return addFooterView(LayoutInflater.from(context)
+                                           .inflate(footerViewLayoutId, null), index);
+    }
+
+    /**
+     * 设置自定义的FooterView
+     */
+    public ZRecyclerView addFooterView(View footerView, int index) {
+        if (listFooterView == null) {
+            listFooterView = new ArrayList<>();
+        }
+
+        if (footerView != null) {
+            index = index < 0 ? listFooterView.size() : index;
+            index = index > listFooterView.size() ? listFooterView.size() : index;
+            footerView.setTag(R.id.srv_reserved_ivew, "reservedView");
+            listFooterView.add(index, footerView);
+
+            if (mWrapAdapter != null) {
+                mWrapAdapter.addFooterView(footerView, index);
+                isAddFooter = true;
+            }
+        }
+        return this;
+    }
+
+    public ZRecyclerView removeHeaderView(View header) {
+        if (listHeaderView != null) {
+            listHeaderView.remove(header);
+            if (listHeaderView.size() == 0) {
+                listHeaderView = null;
+            }
+        }
+
+        if (mWrapAdapter != null) {
+            mWrapAdapter.removeHeaderView(header);
+        }
+        return this;
+    }
+
+    public ZRecyclerView removeAllHeaderView() {
+        listHeaderView.clear();
+        listHeaderView = null;
+
+        if (mWrapAdapter != null) {
+            mWrapAdapter.removeAllHeaderView();
+        }
+        return this;
+    }
+
+    public ZRecyclerView removeFooterView(View footer) {
+        if (listFooterView != null) {
+            listFooterView.remove(footer);
+            if (listFooterView.size() == 0) {
+                listFooterView = null;
+            }
+        }
+
+        if (mWrapAdapter != null) {
+            mWrapAdapter.removeFooterView(footer);
+        }
+        return this;
+    }
+
+    public ZRecyclerView removeAllFooterView() {
+        listFooterView.clear();
+        listFooterView = null;
+
+        if (mWrapAdapter != null) {
+            mWrapAdapter.removeAllFooterView();
+        }
+        return this;
+    }
+
+    /**
      * 获取加载更多的Footer
      */
     public View getLoadMoreFooterView() {
         return loadMoreFooter.getFootView();
-    }
-
-    /**
-     * 获取设置的HeaderView
-     */
-    public View getHeaderView() {
-        return headerView;
-    }
-
-    /**
-     * 获取设置的FooterView
-     */
-    public View getFooterView() {
-        return footerView;
-    }
-
-    /**
-     * 设置自定义的HeaderView
-     */
-    public ZRecyclerView setHeaderView(View headerView) {
-        this.headerView = headerView;
-        if (headerView != null) {
-            this.headerView.setTag("reservedView");
-        }
-
-        if (mWrapAdapter != null) {
-            mWrapAdapter.setHeaderView(headerView);
-        }
-        
-        return this;
-    }
-
-    /**
-     * 设置自定义的HeaderView
-     */
-    public ZRecyclerView setHeaderView(Context context, int headerViewLayoutId) {
-        return setHeaderView(LayoutInflater.from(context)
-                                           .inflate(headerViewLayoutId, null));
-    }
-
-    /**
-     * 设置自定义的FooterView
-     */
-    public ZRecyclerView setFooterView(View footerView) {
-        this.footerView = footerView;
-        if (footerView != null) {
-            this.footerView.setTag("reservedView");
-        }
-        return this;
-
-    }
-
-    /**
-     * 设置自定义的FooterView
-     */
-    public ZRecyclerView setFooterView(Context context, int footerViewLayoutId) {
-        return setFooterView(LayoutInflater.from(context)
-                                           .inflate(footerViewLayoutId, null));
     }
 
     /**
@@ -316,7 +411,7 @@ public class ZRecyclerView extends FrameLayout {
     public ZRecyclerView setLoadMoreFooter(ILoadMoreFooter loadMoreFooter) {
         this.loadMoreFooter = loadMoreFooter;
         this.loadMoreFooter.getFootView()
-                           .setTag("reservedView");
+                           .setTag(R.id.srv_reserved_ivew, "reservedView");
         return this;
     }
 
@@ -624,11 +719,18 @@ public class ZRecyclerView extends FrameLayout {
         }
 
         mWrapAdapter = new WrapperRecyclerAdapter(adapter);
-        mWrapAdapter.setHeaderView(headerView)
-                    .setFooterView(footerView)
-                    .setLoadMoreFooter(loadMoreFooter)
+        mWrapAdapter.setLoadMoreFooter(loadMoreFooter)
                     .setIsShowNoMore(isShowNoMore)
                     .setIsLoadMoreEnabled(isLoadMoreEnabled);
+
+        if (!isAddHeader) {
+            mWrapAdapter.setHeaderViews(listHeaderView);
+        }
+
+        if (!isAddFooter) {
+            mWrapAdapter.setFooterViews(listFooterView);
+        }
+
         mRecyclerView.setAdapter(mWrapAdapter);
 
         setOnItemClickListener(itemClickListener);
@@ -687,31 +789,31 @@ public class ZRecyclerView extends FrameLayout {
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeInserted(headerView == null ? positionStart : positionStart + 1, itemCount);
+            mWrapAdapter.notifyItemRangeInserted(mWrapAdapter.getHeaderLayout() == null ? positionStart : positionStart + 1, itemCount);
         }
 
         @Override
         public void onItemRangeRemoved(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeRemoved(headerView == null ? positionStart : positionStart + 1, itemCount);
+            mWrapAdapter.notifyItemRangeRemoved(mWrapAdapter.getHeaderLayout() == null ? positionStart : positionStart + 1, itemCount);
             checkEmptyView();
         }
 
         @Override
         public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-            int from = headerView == null ? fromPosition : fromPosition + 1;
-            int to = headerView == null ? toPosition : toPosition + 1;
+            int from = mWrapAdapter.getHeaderLayout() == null ? fromPosition : fromPosition + 1;
+            int to = mWrapAdapter.getHeaderLayout() == null ? toPosition : toPosition + 1;
             mWrapAdapter.notifyItemMoved(from, to);
         }
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeChanged(headerView == null ? positionStart : positionStart + 1, itemCount);
+            mWrapAdapter.notifyItemRangeChanged(mWrapAdapter.getHeaderLayout() == null ? positionStart : positionStart + 1, itemCount);
             checkEmptyView();
         }
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
-            mWrapAdapter.notifyItemRangeChanged(headerView == null ? positionStart : positionStart + 1, itemCount, payload);
+            mWrapAdapter.notifyItemRangeChanged(mWrapAdapter.getHeaderLayout() == null ? positionStart : positionStart + 1, itemCount, payload);
             checkEmptyView();
         }
 
@@ -722,12 +824,16 @@ public class ZRecyclerView extends FrameLayout {
                     mEmptyViewContainer.setVisibility(View.VISIBLE);
 
                     //使emptyview居中（除headerview之外）
-                    if (headerView != null && mEmptyViewContainer.getLayoutParams() instanceof MarginLayoutParams) {
-                        if (headerView.getHeight() == 0 && Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            headerView.measure(0,0);
-                            ((MarginLayoutParams) mEmptyViewContainer.getLayoutParams()).topMargin = headerView.getMeasuredHeight();
-                        }else {
-                            ((MarginLayoutParams) mEmptyViewContainer.getLayoutParams()).topMargin = headerView.getHeight();
+                    if (mWrapAdapter.getHeaderLayout() != null && mEmptyViewContainer.getLayoutParams() instanceof MarginLayoutParams) {
+                        if (mWrapAdapter.getHeaderLayout()
+                                        .getHeight() == 0 && Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                            mWrapAdapter.getHeaderLayout()
+                                        .measure(0, 0);
+                            ((MarginLayoutParams) mEmptyViewContainer.getLayoutParams()).topMargin = mWrapAdapter.getHeaderLayout()
+                                                                                                                 .getMeasuredHeight();
+                        } else {
+                            ((MarginLayoutParams) mEmptyViewContainer.getLayoutParams()).topMargin = mWrapAdapter.getHeaderLayout()
+                                                                                                                 .getHeight();
                         }
                     }
                 } else {
