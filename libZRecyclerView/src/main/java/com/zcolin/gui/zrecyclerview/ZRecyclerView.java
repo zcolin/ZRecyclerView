@@ -365,8 +365,10 @@ public class ZRecyclerView extends FrameLayout {
     }
 
     public ZRecyclerView removeAllHeaderView() {
-        listHeaderView.clear();
-        listHeaderView = null;
+        if (listHeaderView != null) {
+            listHeaderView.clear();
+            listHeaderView = null;
+        }
 
         if (mWrapAdapter != null) {
             mWrapAdapter.removeAllHeaderView();
@@ -389,8 +391,10 @@ public class ZRecyclerView extends FrameLayout {
     }
 
     public ZRecyclerView removeAllFooterView() {
-        listFooterView.clear();
-        listFooterView = null;
+        if (listFooterView != null) {
+            listFooterView.clear();
+            listFooterView = null;
+        }
 
         if (mWrapAdapter != null) {
             mWrapAdapter.removeAllFooterView();
