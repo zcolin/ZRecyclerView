@@ -171,7 +171,7 @@ public class ZRecyclerView extends FrameLayout {
      */
     public ZRecyclerView setLinearLayout(boolean isForce) {
         if (isForce || getLayoutManager() == null || !(getLayoutManager() instanceof LinearLayoutManager)) {
-            LinearLayoutManager linearLayoutManager = new MyLinearLayoutManager(getContext());
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             mRecyclerView.setLayoutManager(linearLayoutManager);
         }
@@ -185,7 +185,7 @@ public class ZRecyclerView extends FrameLayout {
      */
     public ZRecyclerView setGridLayout(boolean isForce, int spanCount) {
         if (isForce || getLayoutManager() == null || !(getLayoutManager() instanceof GridLayoutManager)) {
-            GridLayoutManager gridLayoutManager = new MyGridLayoutManager(getContext(), spanCount);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), spanCount);
             gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             mRecyclerView.setLayoutManager(gridLayoutManager);
         }
@@ -851,57 +851,6 @@ public class ZRecyclerView extends FrameLayout {
                 } else {
                     mEmptyViewContainer.setVisibility(View.GONE);
                 }
-            }
-        }
-    }
-
-    class MyLinearLayoutManager extends LinearLayoutManager {
-        public MyLinearLayoutManager(Context context) {
-            super(context);
-        }
-
-        @Override
-        public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
-            if (MeasureSpec.getMode(heightSpec) == MeasureSpec.AT_MOST) {
-                View view = recycler.getViewForPosition(0);
-                if (view != null) {
-                    measureChild(view, widthSpec, heightSpec);
-                    int measuredWidth = MeasureSpec.getSize(widthSpec);
-                    int measuredHeight = view.getMeasuredHeight();
-                    setMeasuredDimension(measuredWidth, measuredHeight);
-                }
-            } else {
-                super.onMeasure(recycler, state, widthSpec, heightSpec);
-            }
-        }
-    }
-
-    public class MyGridLayoutManager extends GridLayoutManager {
-
-        public MyGridLayoutManager(Context context, int spanCount) {
-            super(context, spanCount);
-        }
-
-        public MyGridLayoutManager(Context context, int spanCount, int orientation, boolean reverseLayout) {
-            super(context, spanCount, orientation, reverseLayout);
-        }
-
-        @Override
-        public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
-            if (MeasureSpec.getMode(heightSpec) == MeasureSpec.AT_MOST) {
-                int height = 0;
-                int childCount = getItemCount();
-                for (int i = 0; i < childCount; i++) {
-                    View child = recycler.getViewForPosition(i);
-                    measureChild(child, widthSpec, heightSpec);
-                    if (i % getSpanCount() == 0) {
-                        int measuredHeight = child.getMeasuredHeight() + getDecoratedBottom(child);
-                        height += measuredHeight;
-                    }
-                }
-                setMeasuredDimension(View.MeasureSpec.getSize(widthSpec), height);
-            } else {
-                super.onMeasure(recycler, state, widthSpec, heightSpec);
             }
         }
     }
