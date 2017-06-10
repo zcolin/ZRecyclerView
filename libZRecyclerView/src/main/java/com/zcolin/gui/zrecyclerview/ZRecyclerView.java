@@ -524,11 +524,7 @@ public class ZRecyclerView extends FrameLayout {
      * 设置没有数据时显示的EmptyView
      */
     public ZRecyclerView setEmptyView(View emptyView) {
-        mEmptyViewContainer.removeAllViews();
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        mEmptyViewContainer.addView(emptyView, params);
-        return this;
+        return setEmptyView(emptyView, RelativeLayout.CENTER_IN_PARENT);
     }
 
     /**
@@ -536,7 +532,32 @@ public class ZRecyclerView extends FrameLayout {
      */
     public ZRecyclerView setEmptyView(Context context, int layoutId) {
         return setEmptyView(LayoutInflater.from(context)
-                                          .inflate(layoutId, null));
+                                          .inflate(layoutId, null), RelativeLayout.CENTER_IN_PARENT);
+    }
+
+    /**
+     * 设置没有数据时显示的EmptyView
+     *
+     * @param gravity {@link android.view.Gravity}  ex RelativeLayout.CENTER_IN_PARENT
+     */
+    public ZRecyclerView setEmptyView(Context context, int layoutId, int gravity) {
+        return setEmptyView(LayoutInflater.from(context)
+                                          .inflate(layoutId, null), gravity);
+    }
+
+    /**
+     * 设置没有数据时显示的EmptyView
+     *
+     * @param gravity {@link RelativeLayout}  ex RelativeLayout.CENTER_IN_PARENT
+     */
+    public ZRecyclerView setEmptyView(View emptyView, int gravity) {
+        mEmptyViewContainer.removeAllViews();
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        if (gravity != 0) {
+            params.addRule(gravity);
+        }
+        mEmptyViewContainer.addView(emptyView, params);
+        return this;
     }
 
     /**
