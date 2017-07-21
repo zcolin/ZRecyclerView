@@ -578,14 +578,14 @@ public class ZRecyclerView extends FrameLayout {
      * 使RecyclerView滚动到顶部
      */
     public void scrollToTop() {
-        mRecyclerView.scrollToPosition(0);
+        mRecyclerView.smoothScrollToPosition(0);
     }
 
     /**
      * 使RecyclerView滚动到顶部
      */
     public void scrollToBottom() {
-        mRecyclerView.scrollToPosition(getHeight());
+        mRecyclerView.smoothScrollToPosition(getHeight());
     }
 
 
