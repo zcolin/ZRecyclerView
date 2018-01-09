@@ -1,9 +1,9 @@
 /*
  * *********************************************************
  *   author   colin
- *   company  fosung
+ *   company  telchina
  *   email    wanglin2046@126.com
- *   date     16-12-19 上午11:33
+ *   date     18-1-9 下午2:46
  * ********************************************************
  */
 package com.zcolin.gui.zrecyclerview.swiperefreshlayout;
@@ -30,8 +30,7 @@ public class ZSwipeRefreshLayout extends SwipeRefreshLayout {
     public ZSwipeRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         setColorSchemeResources(android.R.color.holo_green_dark, android.R.color.holo_blue_dark, android.R.color.holo_orange_dark);
-        mTouchSlop = ViewConfiguration.get(context)
-                                      .getScaledTouchSlop();
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
     /**

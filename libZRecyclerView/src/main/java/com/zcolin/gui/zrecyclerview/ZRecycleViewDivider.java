@@ -1,9 +1,9 @@
 /*
  * *********************************************************
  *   author   colin
- *   company  fosung
+ *   company  telchina
  *   email    wanglin2046@126.com
- *   date     16-12-19 上午11:28
+ *   date     18-1-9 下午2:46
  * ********************************************************
  */
 
@@ -31,7 +31,6 @@ public class ZRecycleViewDivider extends RecyclerView.ItemDecoration {
     /**
      * 默认分割线：高度为2px，颜色为灰色
      *
-     * @param context
      * @param orientation 列表方向
      */
     public ZRecycleViewDivider(Context context, int orientation) {
@@ -48,7 +47,6 @@ public class ZRecycleViewDivider extends RecyclerView.ItemDecoration {
     /**
      * 自定义分割线
      *
-     * @param context
      * @param orientation 列表方向
      * @param drawableId  分割线图片
      */
@@ -61,7 +59,6 @@ public class ZRecycleViewDivider extends RecyclerView.ItemDecoration {
     /**
      * 自定义分割线
      *
-     * @param context
      * @param orientation   列表方向
      * @param dividerHeight 分割线高度
      * @param dividerColor  分割线颜色
@@ -107,7 +104,7 @@ public class ZRecycleViewDivider extends RecyclerView.ItemDecoration {
                     continue;
                 }
             }
-            
+
             RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int top = child.getBottom() + layoutParams.bottomMargin;
             final int bottom = top + mDividerHeight;

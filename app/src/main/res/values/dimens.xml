@@ -1,3 +1,12 @@
+<!--
+  ~ **********************************************************
+  ~   author   colin
+  ~   company  telchina
+  ~   email    wanglin2046@126.com
+  ~   date     18-1-9 下午2:46
+  ~ *********************************************************
+  -->
+
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>

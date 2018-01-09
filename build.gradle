@@ -1,8 +1,10 @@
 /*
- *  author   colin
- *  company  fosung
- *  email    wanglin2046@126.com
- *  date     16-7-13 下午4:55
+ * *********************************************************
+ *   author   colin
+ *   company  telchina
+ *   email    wanglin2046@126.com
+ *   date     18-1-9 下午2:46
+ * ********************************************************
  */
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
@@ -12,8 +14,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -23,6 +25,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
+        google()
     }
 }
 
@@ -30,4 +33,17 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+//project级别的全局统一配置,在module的build.gradle中引用如:compileSdkVersion rootProject.ext.compileSdkVersion
+ext {
+    compileSdkVersion = 26
+    buildToolsVersion = "26.0.2"
+    supprotVersion = "26.0.2"
+    minSdkVersion = 15
+    targetSdkVersion = 24
+
+    versionCode = 1
+    versionName = "1.0"
+
+    release_path = '../.release_apk'
+}
 

@@ -1,9 +1,9 @@
 /*
  * *********************************************************
  *   author   colin
- *   company  fosung
+ *   company  telchina
  *   email    wanglin2046@126.com
- *   date     16-12-14 下午2:38
+ *   date     18-1-9 下午2:46
  * ********************************************************
  */
 
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = (ZRecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
 
         //recyclerView.setGridLayout(true, 2);  //默认为LinearLayoutManager
         recyclerView.setOnPullLoadMoreListener(new PullLoadMoreListener());
@@ -46,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         //设置HeaderView和footerView
         recyclerView.addHeaderView(this, R.layout.view_recyclerheader);
-        headerView2 = LayoutInflater.from(this)
-                                    .inflate(R.layout.view_recyclerheader, null);
+        headerView2 = LayoutInflater.from(this).inflate(R.layout.view_recyclerheader, null);
         ((TextView) headerView2.findViewById(R.id.textView)).setText("HEDER 2");
         recyclerView.addHeaderView(headerView2);
         recyclerView.addFooterView(this, R.layout.view_recyclerfooter);
@@ -60,54 +59,45 @@ public class MainActivity extends AppCompatActivity {
         //recyclerView.setLoadMoreFooter(customview implements ILoadMoreFooter);   //设置自定义的加载Footer
         //recyclerView.setLoadMoreText("正在加载...", "正在加载...", "*****已加载全部*****");//设置加载文字
         //recyclerView.addDefaultItemDecoration();//增加默认分割线
-        recyclerView.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<String>() {
-            @Override
-            public void onItemClick(View covertView, int position, String data) {
-                Toast.makeText(MainActivity.this, data, Toast.LENGTH_SHORT)
-                     .show();
-                if (position == 0) {
-                    Intent intent = new Intent(MainActivity.this, ScrollViewLayoutActivity.class);
-                    startActivity(intent);
-                } else if (position == 1) {
-                    Intent intent = new Intent(MainActivity.this, EmptyViewLayoutActivity.class);
-                    startActivity(intent);
-                } else if (position == 2) {
-                    Intent intent = new Intent(MainActivity.this, GridLayoutActivity.class);
-                    startActivity(intent);
-                } else if (position == 3) {
-                    Intent intent = new Intent(MainActivity.this, StaggeredLayoutActivity.class);
-                    startActivity(intent);
-                } else if (position == 4) {
-                    Intent intent = new Intent(MainActivity.this, MultiTypeLayoutActivity.class);
-                    startActivity(intent);
-                } else if (position == 5) {
-                    Intent intent = new Intent(MainActivity.this, SwipeMenuLayoutActivity.class);
-                    startActivity(intent);
-                } else if (position == 6) {
-                    Intent intent = new Intent(MainActivity.this, DecorationActivity.class);
-                    startActivity(intent);
-                } else if (position == 7) {
-                    Intent intent = new Intent(MainActivity.this, DesignSupportActivity.class);
-                    startActivity(intent);
-                } else if (position == 8) {
-                    recyclerView.removeHeaderView(headerView2);
-                }
+        recyclerView.setOnItemClickListener((BaseRecyclerAdapter.OnItemClickListener<String>) (covertView, position, data) -> {
+            Toast.makeText(MainActivity.this, data, Toast.LENGTH_SHORT).show();
+            if (position == 0) {
+                Intent intent = new Intent(MainActivity.this, ScrollViewLayoutActivity.class);
+                startActivity(intent);
+            } else if (position == 1) {
+                Intent intent = new Intent(MainActivity.this, EmptyViewLayoutActivity.class);
+                startActivity(intent);
+            } else if (position == 2) {
+                Intent intent = new Intent(MainActivity.this, GridLayoutActivity.class);
+                startActivity(intent);
+            } else if (position == 3) {
+                Intent intent = new Intent(MainActivity.this, StaggeredLayoutActivity.class);
+                startActivity(intent);
+            } else if (position == 4) {
+                Intent intent = new Intent(MainActivity.this, MultiTypeLayoutActivity.class);
+                startActivity(intent);
+            } else if (position == 5) {
+                Intent intent = new Intent(MainActivity.this, SwipeMenuLayoutActivity.class);
+                startActivity(intent);
+            } else if (position == 6) {
+                Intent intent = new Intent(MainActivity.this, DecorationActivity.class);
+                startActivity(intent);
+            } else if (position == 7) {
+                Intent intent = new Intent(MainActivity.this, DesignSupportActivity.class);
+                startActivity(intent);
+            } else if (position == 8) {
+                recyclerView.removeHeaderView(headerView2);
             }
         });
 
-        recyclerView.setOnItemLongClickListener(new BaseRecyclerAdapter.OnItemLongClickListener<String>() {
-            @Override
-            public boolean onItemLongClick(View covertView, int position, String data) {
-                recyclerAdapter.getDatas()
-                               .remove(position);
-                recyclerAdapter.notifyItemRemoved(position);
-                recyclerAdapter.notifyItemRangeChanged(position, recyclerAdapter.getDatas()
-                                                                                .size() - position);
-                return true;
-            }
+        recyclerView.setOnItemLongClickListener((BaseRecyclerAdapter.OnItemLongClickListener<String>) (covertView, position, data) -> {
+            recyclerAdapter.getDatas().remove(position);
+            recyclerAdapter.notifyItemRemoved(position);
+            recyclerAdapter.notifyItemRangeChanged(position, recyclerAdapter.getDatas().size() - position);
+            return true;
         });
 
-        notifyData(new ArrayList<String>(), false);
+        notifyData(new ArrayList<>(), false);
         recyclerView.refreshWithPull();
         // recyclerView.refresh();//没有下拉刷新效果，直接刷新数据
         // recyclerView.setRefreshing(true);只有下拉刷新效果，不刷新数据
@@ -135,14 +125,11 @@ public class MainActivity extends AppCompatActivity {
      * 模仿从网络请求数据
      */
     public void requestData(final int page) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                notifyData(setList(page), page == 1);
-                recyclerView.setPullLoadMoreCompleted();
-                if (page == 2) {
-                    recyclerView.setNoMore(true);
-                }
+        new Handler().postDelayed(() -> {
+            notifyData(setList(page), page == 1);
+            recyclerView.setPullLoadMoreCompleted();
+            if (page == 2) {
+                recyclerView.setNoMore(true);
             }
         }, 1000);
     }
@@ -168,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 dataList.add("Decoration");
             } else if (i == 7) {
                 dataList.add("DesignSupportActivity");
-            }  else if (i == 8) {
+            } else if (i == 8) {
                 dataList.add("移除Header2");
             } else {
                 dataList.add(String.format("第%d条数据", i));

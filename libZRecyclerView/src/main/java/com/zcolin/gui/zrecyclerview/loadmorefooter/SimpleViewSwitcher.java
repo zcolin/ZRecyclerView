@@ -1,9 +1,9 @@
 /*
  * *********************************************************
  *   author   colin
- *   company  fosung
+ *   company  telchina
  *   email    wanglin2046@126.com
- *   date     16-12-19 下午1:30
+ *   date     18-1-9 下午2:46
  * ********************************************************
  */
 
@@ -53,17 +53,17 @@ public class SimpleViewSwitcher extends ViewGroup {
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
             if (child.getVisibility() != View.GONE) {
-                child.layout(0, 0,  r - l,  b - t);
+                child.layout(0, 0, r - l, b - t);
 
             }
         }
     }
 
     public void setView(View view) {
-        if (this.getChildCount() != 0){
+        if (this.getChildCount() != 0) {
             this.removeViewAt(0);
         }
-        this.addView(view,0);
+        this.addView(view, 0);
     }
 
 }

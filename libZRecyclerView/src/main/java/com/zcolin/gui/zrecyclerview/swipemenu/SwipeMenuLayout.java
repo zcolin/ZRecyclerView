@@ -1,9 +1,9 @@
 /*
  * *********************************************************
  *   author   colin
- *   company  fosung
+ *   company  telchina
  *   email    wanglin2046@126.com
- *   date     16-12-19 上午11:28
+ *   date     18-1-9 下午2:46
  * ********************************************************
  */
 
@@ -97,16 +97,14 @@ public class SwipeMenuLayout extends FrameLayout {
             }
 
             @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2,
-                                   float velocityX, float velocityY) {
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
                 if (velocityX > mViewConfiguration.getScaledMinimumFlingVelocity() || velocityY > mViewConfiguration.getScaledMinimumFlingVelocity())
                     isFling = true;
                 return isFling;
             }
         };
-        mGestureDetector = new GestureDetectorCompat(getContext(),
-                mGestureListener);
+        mGestureDetector = new GestureDetectorCompat(getContext(), mGestureListener);
 
         mCloseScroller = ScrollerCompat.create(getContext());
         mOpenScroller = ScrollerCompat.create(getContext());
@@ -115,16 +113,14 @@ public class SwipeMenuLayout extends FrameLayout {
     public void setCloseInterpolator(Interpolator closeInterpolator) {
         mCloseInterpolator = closeInterpolator;
         if (mCloseInterpolator != null) {
-            mCloseScroller = ScrollerCompat.create(getContext(),
-                    mCloseInterpolator);
+            mCloseScroller = ScrollerCompat.create(getContext(), mCloseInterpolator);
         }
     }
 
     public void setOpenInterpolator(Interpolator openInterpolator) {
         mOpenInterpolator = openInterpolator;
         if (mOpenInterpolator != null) {
-            mOpenScroller = ScrollerCompat.create(getContext(),
-                    mOpenInterpolator);
+            mOpenScroller = ScrollerCompat.create(getContext(), mOpenInterpolator);
         }
     }
 
@@ -142,8 +138,7 @@ public class SwipeMenuLayout extends FrameLayout {
                 swipe(dis);
                 break;
             case MotionEvent.ACTION_UP:
-                if ((isFling || Math.abs(mDownX - event.getX()) > (mMenuView.getWidth() / 3)) &&
-                        Math.signum(mDownX - event.getX()) == mSwipeDirection) {
+                if ((isFling || Math.abs(mDownX - event.getX()) > (mMenuView.getWidth() / 3)) && Math.signum(mDownX - event.getX()) == mSwipeDirection) {
                     smoothOpenMenu();
                 } else {
                     smoothCloseMenu();
@@ -168,18 +163,17 @@ public class SwipeMenuLayout extends FrameLayout {
 
         LayoutParams lp = (LayoutParams) mContentView.getLayoutParams();
         int lGap = getPaddingLeft() + lp.leftMargin;
-        mContentView.layout(lGap - dis,
-                mContentView.getTop(),
-                lGap + (OVER_API_11 ? mContentView.getMeasuredWidthAndState() : mContentView.getMeasuredWidth()) - dis,
-                mContentView.getBottom());
+        mContentView.layout(lGap - dis, mContentView.getTop(), lGap + (OVER_API_11 ? mContentView.getMeasuredWidthAndState() : mContentView.getMeasuredWidth
+                ()) - dis, mContentView
+                .getBottom());
 
         if (mSwipeDirection == SwipeMenuRecyclerView.DIRECTION_LEFT) {
-            mMenuView.layout(getMeasuredWidth() - dis, mMenuView.getTop(),
-                    getMeasuredWidth() + (OVER_API_11 ? mMenuView.getMeasuredWidthAndState() : mMenuView.getMeasuredWidth()) - dis,
-                    mMenuView.getBottom());
+            mMenuView.layout(getMeasuredWidth() - dis, mMenuView.getTop(), getMeasuredWidth() + (OVER_API_11 ? mMenuView.getMeasuredWidthAndState() : 
+                    mMenuView.getMeasuredWidth()) - dis, mMenuView
+                    .getBottom());
         } else {
-            mMenuView.layout(-(OVER_API_11 ? mMenuView.getMeasuredWidthAndState() : mMenuView.getMeasuredWidth()) - dis, mMenuView.getTop(),
-                    -dis, mMenuView.getBottom());
+            mMenuView.layout(-(OVER_API_11 ? mMenuView.getMeasuredWidthAndState() : mMenuView.getMeasuredWidth()) - dis, mMenuView.getTop(), -dis, mMenuView
+                    .getBottom());
         }
     }
 
@@ -254,21 +248,20 @@ public class SwipeMenuLayout extends FrameLayout {
         LayoutParams lp = (LayoutParams) mContentView.getLayoutParams();
         int lGap = getPaddingLeft() + lp.leftMargin;
         int tGap = getPaddingTop() + lp.topMargin;
-        mContentView.layout(lGap,
-                tGap,
-                lGap + (OVER_API_11 ? mContentView.getMeasuredWidthAndState() : mContentView.getMeasuredWidth()),
-                tGap + (OVER_API_11 ? mContentView.getMeasuredHeightAndState() : mContentView.getMeasuredHeight()));
+        mContentView.layout(lGap, tGap, lGap + (OVER_API_11 ? mContentView.getMeasuredWidthAndState() : mContentView.getMeasuredWidth()), tGap + (OVER_API_11
+                ? mContentView
+                .getMeasuredHeightAndState() : mContentView.getMeasuredHeight()));
 
 
         lp = (LayoutParams) mMenuView.getLayoutParams();
         tGap = getPaddingTop() + lp.topMargin;
         if (mSwipeDirection == SwipeMenuRecyclerView.DIRECTION_LEFT) {
-            mMenuView.layout(getMeasuredWidth(), tGap,
-                    getMeasuredWidth() + (OVER_API_11 ? mMenuView.getMeasuredWidthAndState() : mMenuView.getMeasuredWidth()),
-                    tGap + mMenuView.getMeasuredHeightAndState());
+            mMenuView.layout(getMeasuredWidth(), tGap, getMeasuredWidth() + (OVER_API_11 ? mMenuView.getMeasuredWidthAndState() : mMenuView.getMeasuredWidth
+                    ()), tGap + mMenuView
+                    .getMeasuredHeightAndState());
         } else {
-            mMenuView.layout(-(OVER_API_11 ? mMenuView.getMeasuredWidthAndState() : mMenuView.getMeasuredWidth()), tGap,
-                    0, tGap + mMenuView.getMeasuredHeightAndState());
+            mMenuView.layout(-(OVER_API_11 ? mMenuView.getMeasuredWidthAndState() : mMenuView.getMeasuredWidth()), tGap, 0, tGap + mMenuView
+                    .getMeasuredHeightAndState());
         }
     }
 

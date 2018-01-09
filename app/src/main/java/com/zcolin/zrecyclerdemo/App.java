@@ -1,9 +1,9 @@
 /*
  * *********************************************************
  *   author   colin
- *   company  fosung
+ *   company  telchina
  *   email    wanglin2046@126.com
- *   date     16-12-14 下午2:48
+ *   date     18-1-9 下午2:46
  * ********************************************************
  */
 
@@ -15,11 +15,6 @@ public class App extends Application {
 
     public void onCreate() {
         super.onCreate();
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread thread, Throwable ex) {
-                ex.printStackTrace();
-            }
-        });
+        Thread.setDefaultUncaughtExceptionHandler((thread, ex) -> ex.printStackTrace());
     }
 }

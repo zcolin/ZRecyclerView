@@ -1,9 +1,9 @@
 /*
  * *********************************************************
  *   author   colin
- *   company  fosung
+ *   company  telchina
  *   email    wanglin2046@126.com
- *   date     16-12-19 上午11:28
+ *   date     18-1-9 下午2:46
  * ********************************************************
  */
 
@@ -82,13 +82,12 @@ public class ZRecyclerView extends FrameLayout {
 
     private void initView(Context context, int resId) {
         mContext = context;
-        View view = LayoutInflater.from(context)
-                                  .inflate(resId > 0 ? resId : R.layout.gui_zrecyclerview_zrecycler, null);
-        mSwipeRefreshLayout = (ZSwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        View view = LayoutInflater.from(context).inflate(resId > 0 ? resId : R.layout.gui_zrecyclerview_zrecycler, null);
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_green_dark, android.R.color.holo_blue_dark, android.R.color.holo_orange_dark);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayoutOnRefresh(this));
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setVerticalScrollBarEnabled(true);
 
         mRecyclerView.setHasFixedSize(true);
@@ -97,7 +96,7 @@ public class ZRecyclerView extends FrameLayout {
         mRecyclerView.setOnTouchListener(new onTouchRecyclerView());
         setLinearLayout(false);
 
-        mEmptyViewContainer = (RelativeLayout) view.findViewById(R.id.emptyView);
+        mEmptyViewContainer = view.findViewById(R.id.emptyView);
         mEmptyViewContainer.setVisibility(View.GONE);
 
         if (isLoadMoreEnabled) {
@@ -288,8 +287,7 @@ public class ZRecyclerView extends FrameLayout {
      * 设置自定义的HeaderView
      */
     public ZRecyclerView addHeaderView(Context context, int headerViewLayoutId, int index) {
-        return addHeaderView(LayoutInflater.from(context)
-                                           .inflate(headerViewLayoutId, null), index);
+        return addHeaderView(LayoutInflater.from(context).inflate(headerViewLayoutId, null), index);
     }
 
     /**
@@ -332,8 +330,7 @@ public class ZRecyclerView extends FrameLayout {
      * 设置自定义的FooterView
      */
     public ZRecyclerView addFooterView(Context context, int footerViewLayoutId, int index) {
-        return addFooterView(LayoutInflater.from(context)
-                                           .inflate(footerViewLayoutId, null), index);
+        return addFooterView(LayoutInflater.from(context).inflate(footerViewLayoutId, null), index);
     }
 
     /**
@@ -422,8 +419,7 @@ public class ZRecyclerView extends FrameLayout {
      */
     public ZRecyclerView setLoadMoreFooter(ILoadMoreFooter loadMoreFooter) {
         this.loadMoreFooter = loadMoreFooter;
-        this.loadMoreFooter.getFootView()
-                           .setTag(R.id.srv_reserved_ivew, "reservedView");
+        this.loadMoreFooter.getFootView().setTag(R.id.srv_reserved_ivew, "reservedView");
         return this;
     }
 
@@ -531,8 +527,7 @@ public class ZRecyclerView extends FrameLayout {
      * 设置没有数据时显示的EmptyView
      */
     public ZRecyclerView setEmptyView(Context context, int layoutId) {
-        return setEmptyView(LayoutInflater.from(context)
-                                          .inflate(layoutId, null), RelativeLayout.CENTER_IN_PARENT);
+        return setEmptyView(LayoutInflater.from(context).inflate(layoutId, null), RelativeLayout.CENTER_IN_PARENT);
     }
 
     /**
@@ -541,8 +536,7 @@ public class ZRecyclerView extends FrameLayout {
      * @param gravity {@link android.view.Gravity}  ex RelativeLayout.CENTER_IN_PARENT
      */
     public ZRecyclerView setEmptyView(Context context, int layoutId, int gravity) {
-        return setEmptyView(LayoutInflater.from(context)
-                                          .inflate(layoutId, null), gravity);
+        return setEmptyView(LayoutInflater.from(context).inflate(layoutId, null), gravity);
     }
 
     /**
@@ -552,7 +546,8 @@ public class ZRecyclerView extends FrameLayout {
      */
     public ZRecyclerView setEmptyView(View emptyView, int gravity) {
         mEmptyViewContainer.removeAllViews();
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams
+                .WRAP_CONTENT);
         if (gravity != 0) {
             params.addRule(gravity);
         }
@@ -634,13 +629,10 @@ public class ZRecyclerView extends FrameLayout {
      * 手动调用下拉刷新，有下拉效果
      */
     public void refreshWithPull() {
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isRefreshEnabled) {
-                    mSwipeRefreshLayout.setRefreshing(true);
-                    refresh();
-                }
+        handler.postDelayed(() -> {
+            if (isRefreshEnabled) {
+                mSwipeRefreshLayout.setRefreshing(true);
+                refresh();
             }
         }, 300);
     }
@@ -650,13 +642,10 @@ public class ZRecyclerView extends FrameLayout {
      * 如果需要加载数据和状态显示调用 {@link #refreshWithPull()}
      */
     public void setRefreshing(final boolean isRefresh) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (isRefreshEnabled) {
-                    isRefreshing = isRefresh;
-                    mSwipeRefreshLayout.setRefreshing(isRefresh);
-                }
+        handler.post(() -> {
+            if (isRefreshEnabled) {
+                isRefreshing = isRefresh;
+                mSwipeRefreshLayout.setRefreshing(isRefresh);
             }
         });
     }
@@ -746,15 +735,12 @@ public class ZRecyclerView extends FrameLayout {
 
     public void setAdapter(RecyclerView.Adapter adapter) {
         if (mWrapAdapter != null && mWrapAdapter.getAdapter() != null && hasRegisterEmptyObserver) {
-            mWrapAdapter.getAdapter()
-                        .unregisterAdapterDataObserver(mEmptyDataObserver);
+            mWrapAdapter.getAdapter().unregisterAdapterDataObserver(mEmptyDataObserver);
             hasRegisterEmptyObserver = false;
         }
 
         mWrapAdapter = new WrapperRecyclerAdapter(adapter);
-        mWrapAdapter.setLoadMoreFooter(loadMoreFooter)
-                    .setIsShowNoMore(isShowNoMore)
-                    .setIsLoadMoreEnabled(isLoadMoreEnabled);
+        mWrapAdapter.setLoadMoreFooter(loadMoreFooter).setIsShowNoMore(isShowNoMore).setIsLoadMoreEnabled(isLoadMoreEnabled);
 
         if (!isAddHeader) {
             mWrapAdapter.setHeaderViews(listHeaderView);
@@ -792,8 +778,7 @@ public class ZRecyclerView extends FrameLayout {
         
         /*设置emptyView的监听者*/
         if (mWrapAdapter != null && mWrapAdapter.getAdapter() != null && !hasRegisterEmptyObserver && mEmptyDataObserver != null) {
-            mWrapAdapter.getAdapter()
-                        .registerAdapterDataObserver(mEmptyDataObserver);
+            mWrapAdapter.getAdapter().registerAdapterDataObserver(mEmptyDataObserver);
             hasRegisterEmptyObserver = true;
         }
     }
@@ -804,8 +789,7 @@ public class ZRecyclerView extends FrameLayout {
         
         /*注销监听者*/
         if (mWrapAdapter != null && mWrapAdapter.getAdapter() != null && hasRegisterEmptyObserver) {
-            mWrapAdapter.getAdapter()
-                        .unregisterAdapterDataObserver(mEmptyDataObserver);
+            mWrapAdapter.getAdapter().unregisterAdapterDataObserver(mEmptyDataObserver);
             hasRegisterEmptyObserver = false;
         }
     }
@@ -852,21 +836,16 @@ public class ZRecyclerView extends FrameLayout {
 
         private void checkEmptyView() {
             if (mEmptyViewContainer != null && mEmptyViewContainer.getChildCount() > 0) {
-                if (mWrapAdapter.getAdapter()
-                                .getItemCount() == 0) {
+                if (mWrapAdapter.getAdapter().getItemCount() == 0) {
                     mEmptyViewContainer.setVisibility(View.VISIBLE);
 
                     //使emptyview居中（除headerview之外）
                     if (mWrapAdapter.getHeaderLayout() != null && mEmptyViewContainer.getLayoutParams() instanceof MarginLayoutParams) {
-                        if (mWrapAdapter.getHeaderLayout()
-                                        .getHeight() == 0 && Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            mWrapAdapter.getHeaderLayout()
-                                        .measure(0, 0);
-                            ((MarginLayoutParams) mEmptyViewContainer.getLayoutParams()).topMargin = mWrapAdapter.getHeaderLayout()
-                                                                                                                 .getMeasuredHeight();
+                        if (mWrapAdapter.getHeaderLayout().getHeight() == 0 && Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                            mWrapAdapter.getHeaderLayout().measure(0, 0);
+                            ((MarginLayoutParams) mEmptyViewContainer.getLayoutParams()).topMargin = mWrapAdapter.getHeaderLayout().getMeasuredHeight();
                         } else {
-                            ((MarginLayoutParams) mEmptyViewContainer.getLayoutParams()).topMargin = mWrapAdapter.getHeaderLayout()
-                                                                                                                 .getHeight();
+                            ((MarginLayoutParams) mEmptyViewContainer.getLayoutParams()).topMargin = mWrapAdapter.getHeaderLayout().getHeight();
                         }
                     }
                 } else {

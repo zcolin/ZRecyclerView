@@ -1,9 +1,9 @@
 /*
  * *********************************************************
  *   author   colin
- *   company  fosung
+ *   company  telchina
  *   email    wanglin2046@126.com
- *   date     16-12-19 上午11:28
+ *   date     18-1-9 下午2:46
  * ********************************************************
  */
 
@@ -48,8 +48,10 @@ public class ZSwipeMenuRecyclerView extends ZRecyclerView {
     public Interpolator getCloseInterpolator() {
         return swipeMenuRecyclerView.getCloseInterpolator();
     }
+
     /**
      * open menu manually
+     *
      * @param position the adapter position
      */
     public void smoothOpenMenu(int position) {
@@ -69,6 +71,7 @@ public class ZSwipeMenuRecyclerView extends ZRecyclerView {
 
     /**
      * get current touched view
+     *
      * @return touched view, maybe null
      */
     public SwipeMenuLayout getTouchView() {
@@ -78,6 +81,7 @@ public class ZSwipeMenuRecyclerView extends ZRecyclerView {
 
     /**
      * set the swipe direction
+     *
      * @param direction swipe direction (left or right)
      */
     public void setSwipeDirection(int direction) {

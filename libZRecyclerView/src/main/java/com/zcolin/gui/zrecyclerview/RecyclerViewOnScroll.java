@@ -1,9 +1,9 @@
 /*
  * *********************************************************
  *   author   colin
- *   company  fosung
+ *   company  telchina
  *   email    wanglin2046@126.com
- *   date     16-12-19 上午11:28
+ *   date     18-1-9 下午2:46
  * ********************************************************
  */
 
@@ -56,12 +56,9 @@ public class RecyclerViewOnScroll extends RecyclerView.OnScrollListener {
         } else {
             mPullLoadMoreRecyclerView.setSwipeRefreshEnable(false);
         }
-        if (mPullLoadMoreRecyclerView.isLoadMoreEnabled() &&
-                !mPullLoadMoreRecyclerView.isRefreshing()
-                && !mPullLoadMoreRecyclerView.isNoMore()
-                && (lastCompletelyVisibleItem == totalItemCount - 1)
-                && !mPullLoadMoreRecyclerView.isLoadingData()
-                && (dx > 0 || dy > 0)) {
+        if (mPullLoadMoreRecyclerView.isLoadMoreEnabled() && !mPullLoadMoreRecyclerView.isRefreshing() && !mPullLoadMoreRecyclerView.isNoMore() && 
+                (lastCompletelyVisibleItem == totalItemCount - 1) && !mPullLoadMoreRecyclerView
+                .isLoadingData() && (dx > 0 || dy > 0)) {
             mPullLoadMoreRecyclerView.loadMoreWithLoading();
         }
 

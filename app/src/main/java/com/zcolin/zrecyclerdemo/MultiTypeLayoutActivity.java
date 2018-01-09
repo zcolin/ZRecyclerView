@@ -1,9 +1,9 @@
 /*
  * *********************************************************
  *   author   colin
- *   company  fosung
+ *   company  telchina
  *   email    wanglin2046@126.com
- *   date     17-2-17 下午12:09
+ *   date     18-1-9 下午2:46
  * ********************************************************
  */
 
@@ -12,7 +12,6 @@ package com.zcolin.zrecyclerdemo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Toast;
 
 import com.zcolin.gui.zrecyclerview.BaseRecyclerAdapter;
@@ -32,22 +31,17 @@ public class MultiTypeLayoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = (ZRecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setGridLayout(false, 3);//默认已设置LinearLayoutManager
         recyclerView.setOnPullLoadMoreListener(new PullLoadMoreListener());
         recyclerView.setEmptyView(this, R.layout.view_recycler_empty);
         recyclerView.addHeaderView(this, R.layout.view_recyclerheader);
 
-        recyclerView.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<String>() {
-            @Override
-            public void onItemClick(View covertView, int position, String data) {
-                Toast.makeText(MultiTypeLayoutActivity.this, data, Toast.LENGTH_SHORT)
-                     .show();
+        recyclerView.setOnItemClickListener((BaseRecyclerAdapter.OnItemClickListener<String>) (covertView, position, data) -> Toast.makeText
+                (MultiTypeLayoutActivity.this, data, Toast.LENGTH_SHORT)
+                                                                                                                                   .show());
 
-            }
-        });
-
-        notifyData(new ArrayList<String>(), false);
+        notifyData(new ArrayList<>(), false);
         recyclerView.refreshWithPull();
     }
 
@@ -73,14 +67,11 @@ public class MultiTypeLayoutActivity extends AppCompatActivity {
      * 模仿从网络请求数据
      */
     public void requestData(final int page) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                notifyData(setList(page), page == 1);
-                recyclerView.setPullLoadMoreCompleted();
-                if (page == 2) {
-                    recyclerView.setNoMore(true);
-                }
+        new Handler().postDelayed(() -> {
+            notifyData(setList(page), page == 1);
+            recyclerView.setPullLoadMoreCompleted();
+            if (page == 2) {
+                recyclerView.setNoMore(true);
             }
         }, 1000);
     }

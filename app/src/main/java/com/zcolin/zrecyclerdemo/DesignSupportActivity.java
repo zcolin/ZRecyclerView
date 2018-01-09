@@ -1,9 +1,9 @@
 /*
  * *********************************************************
  *   author   colin
- *   company  fosung
+ *   company  telchina
  *   email    wanglin2046@126.com
- *   date     17-3-31 上午10:02
+ *   date     18-1-9 下午2:46
  * ********************************************************
  */
 
@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Toast;
 
 import com.zcolin.gui.zrecyclerview.BaseRecyclerAdapter;
@@ -40,37 +39,24 @@ public class DesignSupportActivity extends AppCompatActivity {
     }
 
     private void init() {
-        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(v, "FloatActionBar-click", Snackbar.LENGTH_LONG)
-                        .setAction("toast", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
+        findViewById(R.id.fab).setOnClickListener(v -> Snackbar.make(v, "FloatActionBar-click", Snackbar.LENGTH_LONG).setAction("toast", v1 -> {
 
-                            }
-                        });
-            }
-        });
+        }));
 
 
-        recyclerView = (ZRecyclerView) findViewById(R.id.pullLoadMoreRecyclerView);
+        recyclerView = findViewById(R.id.pullLoadMoreRecyclerView);
         recyclerView.setOnPullLoadMoreListener(new PullLoadMoreListener());
 
         //设置HeaderView
         recyclerView.addHeaderView(this, R.layout.view_recyclerheader);
 
         //下拉和到底加载的进度条样式，默认为 ProgressStyle.BallSpinFadeLoaderIndicator
-        recyclerView.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<String>() {
-            @Override
-            public void onItemClick(View covertView, int position, String data) {
-                Toast.makeText(DesignSupportActivity.this, data, Toast.LENGTH_SHORT)
-                     .show();
-            }
-        });
+        recyclerView.setOnItemClickListener((BaseRecyclerAdapter.OnItemClickListener<String>) (covertView, position, data) -> Toast.makeText
+                (DesignSupportActivity.this, data, Toast.LENGTH_SHORT)
+                                                                                                                                   .show());
 
         //绑定Adapter
-        notifyData(new ArrayList<String>(), false);
+        notifyData(new ArrayList<>(), false);
 
         recyclerView.refreshWithPull();     //有下拉效果的数据刷新
     }
@@ -93,18 +79,10 @@ public class DesignSupportActivity extends AppCompatActivity {
 
 
     public void getDataFromShopList(final int page) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        notifyData(setList(page), page == 1);
-                        recyclerView.setPullLoadMoreCompleted();
-                    }
-                });
-            }
-        }, 1000);
+        new Handler().postDelayed(() -> runOnUiThread(() -> {
+            notifyData(setList(page), page == 1);
+            recyclerView.setPullLoadMoreCompleted();
+        }), 1000);
     }
 
     //制造假数据

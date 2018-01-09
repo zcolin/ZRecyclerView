@@ -1,9 +1,9 @@
 /*
  * *********************************************************
  *   author   colin
- *   company  fosung
+ *   company  telchina
  *   email    wanglin2046@126.com
- *   date     17-2-17 下午12:02
+ *   date     18-1-9 下午2:46
  * ********************************************************
  */
 package com.zcolin.zrecyclerdemo.adapter;

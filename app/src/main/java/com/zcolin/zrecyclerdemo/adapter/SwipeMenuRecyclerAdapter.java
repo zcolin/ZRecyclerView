@@ -1,15 +1,14 @@
 /*
  * *********************************************************
  *   author   colin
- *   company  fosung
+ *   company  telchina
  *   email    wanglin2046@126.com
- *   date     16-12-20 上午11:20
+ *   date     18-1-9 下午2:46
  * ********************************************************
  */
 package com.zcolin.zrecyclerdemo.adapter;
 
 
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,29 +36,14 @@ public class SwipeMenuRecyclerAdapter extends BaseRecyclerAdapter<String> {
 
         tvName.setText(String.format("第%d条数据", position));
 
-        tvOpen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(superSwipeMenuLayout.getContext(), "Open", Toast.LENGTH_SHORT)
-                     .show();
-            }
-        });
-        tvDel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(superSwipeMenuLayout.getContext(), "Delete", Toast.LENGTH_SHORT)
-                     .show();
-            }
-        });
+        tvOpen.setOnClickListener(v -> Toast.makeText(superSwipeMenuLayout.getContext(), "Open", Toast.LENGTH_SHORT).show());
+        tvDel.setOnClickListener(v -> Toast.makeText(superSwipeMenuLayout.getContext(), "Delete", Toast.LENGTH_SHORT).show());
 
-        iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (superSwipeMenuLayout.isOpen()) {
-                    superSwipeMenuLayout.closeMenu();
-                } else {
-                    superSwipeMenuLayout.openMenu();
-                }
+        iv.setOnClickListener(v -> {
+            if (superSwipeMenuLayout.isOpen()) {
+                superSwipeMenuLayout.closeMenu();
+            } else {
+                superSwipeMenuLayout.openMenu();
             }
         });
     }

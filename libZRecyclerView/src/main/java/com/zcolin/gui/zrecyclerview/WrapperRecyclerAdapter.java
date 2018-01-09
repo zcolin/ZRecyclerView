@@ -1,9 +1,9 @@
 /*
  * *********************************************************
  *   author   colin
- *   company  fosung
+ *   company  telchina
  *   email    wanglin2046@126.com
- *   date     16-12-19 下午1:18
+ *   date     18-1-9 下午2:46
  * ********************************************************
  */
 package com.zcolin.gui.zrecyclerview;
@@ -247,8 +247,7 @@ class WrapperRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private boolean isReservedItemType(int itemViewType) {
-        return itemViewType == TYPE_LOADMORE_FOOTER
-                || itemViewType == TYPE_HEADER || itemViewType == TYPE_FOOTER;
+        return itemViewType == TYPE_LOADMORE_FOOTER || itemViewType == TYPE_HEADER || itemViewType == TYPE_FOOTER;
     }
 
     @Override
@@ -307,8 +306,7 @@ class WrapperRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public boolean isFooterView(int position) {
-        return mFooterLayout != null &&
-                ((isLoadMoreEnabled && position == getItemCount() - 2) || (!isLoadMoreEnabled && position == getItemCount() - 1));
+        return mFooterLayout != null && ((isLoadMoreEnabled && position == getItemCount() - 2) || (!isLoadMoreEnabled && position == getItemCount() - 1));
     }
 
     public int getHeaderViewCount() {
@@ -359,8 +357,8 @@ class WrapperRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
         int position = holder.getLayoutPosition();
         if (lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
-            if (isReservedItemType(getItemViewType(position)) ||
-                    (adapter instanceof BaseRecyclerAdapter && ((BaseRecyclerAdapter) adapter).getIsStaggeredItemFullSpan(getRealPosition(position), getItemViewType(position)))) {
+            if (isReservedItemType(getItemViewType(position)) || (adapter instanceof BaseRecyclerAdapter && ((BaseRecyclerAdapter) adapter)
+                    .getIsStaggeredItemFullSpan(getRealPosition(position), getItemViewType(position)))) {
                 StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
                 p.setFullSpan(true);
             }

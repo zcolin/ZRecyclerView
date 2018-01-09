@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<!--
+  ~ **********************************************************
+  ~   author   colin
+  ~   company  telchina
+  ~   email    wanglin2046@126.com
+  ~   date     18-1-9 下午2:46
+  ~ *********************************************************
+  -->
+
+<resources>
     <item name="srv_smContentView" type="id"/>
     <item name="srv_smMenuView" type="id"/>
     <item name="srv_reserved_ivew" type="id"/>
