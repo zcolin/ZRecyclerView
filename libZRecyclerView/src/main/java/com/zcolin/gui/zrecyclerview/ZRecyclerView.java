@@ -57,7 +57,7 @@ public class ZRecyclerView extends FrameLayout {
     private BaseRecyclerAdapter.OnItemLongClickListener itemLongClickListener;
     private long minClickIntervaltime = 100; //ITEM点击的最小间隔
 
-    private WrapperRecyclerAdapter mWrapAdapter;
+    private WrapperRecyclerAdapter wrapAdapter;
     private ILoadMoreFooter        loadMoreFooter;
     private RecyclerView           mRecyclerView;
     private ZSwipeRefreshLayout    mSwipeRefreshLayout;
@@ -84,8 +84,10 @@ public class ZRecyclerView extends FrameLayout {
         mContext = context;
         View view = LayoutInflater.from(context).inflate(resId > 0 ? resId : R.layout.gui_zrecyclerview_zrecycler, null);
         mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_green_dark, android.R.color.holo_blue_dark, android.R.color.holo_orange_dark);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayoutOnRefresh(this));
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_green_dark, android.R.color.holo_blue_dark, android.R.color.holo_orange_dark);
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayoutOnRefresh(this));
+        }
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setVerticalScrollBarEnabled(true);
@@ -97,7 +99,9 @@ public class ZRecyclerView extends FrameLayout {
         setLinearLayout(false);
 
         mEmptyViewContainer = view.findViewById(R.id.emptyView);
-        mEmptyViewContainer.setVisibility(View.GONE);
+        if (mEmptyViewContainer != null) {
+            mEmptyViewContainer.setVisibility(View.GONE);
+        }
 
         if (isLoadMoreEnabled) {
             setLoadMoreFooter(new DefLoadMoreFooter(getContext()));
@@ -120,9 +124,9 @@ public class ZRecyclerView extends FrameLayout {
      */
     public <T> ZRecyclerView setOnItemClickListener(BaseRecyclerAdapter.OnItemClickListener<T> li) {
         itemClickListener = li;
-        if (mWrapAdapter != null) {
-            if (mWrapAdapter.getAdapter() instanceof BaseRecyclerAdapter) {
-                ((BaseRecyclerAdapter) mWrapAdapter.getAdapter()).setOnItemClickListener(li);
+        if (wrapAdapter != null) {
+            if (wrapAdapter.getAdapter() instanceof BaseRecyclerAdapter) {
+                ((BaseRecyclerAdapter) wrapAdapter.getAdapter()).setOnItemClickListener(li);
             } else {
                 throw new IllegalArgumentException("adapter 必须继承BaseRecyclerAdapter 才能使用setOnItemClickListener");
             }
@@ -136,9 +140,9 @@ public class ZRecyclerView extends FrameLayout {
      */
     public <T> ZRecyclerView setOnItemLongClickListener(BaseRecyclerAdapter.OnItemLongClickListener<T> li) {
         itemLongClickListener = li;
-        if (mWrapAdapter != null) {
-            if (mWrapAdapter.getAdapter() instanceof BaseRecyclerAdapter) {
-                ((BaseRecyclerAdapter) mWrapAdapter.getAdapter()).setOnItemLongClickListener(li);
+        if (wrapAdapter != null) {
+            if (wrapAdapter.getAdapter() instanceof BaseRecyclerAdapter) {
+                ((BaseRecyclerAdapter) wrapAdapter.getAdapter()).setOnItemLongClickListener(li);
             } else {
                 throw new IllegalArgumentException("adapter 必须继承BaseRecyclerAdapter 才能使用setOnItemLongClickListener");
             }
@@ -149,13 +153,13 @@ public class ZRecyclerView extends FrameLayout {
     /**
      * 设置Item点击的最小间隔
      *
-     * @param minClickIntervaltime millionSeconds
+     * @param minClickIntervalTime 最小间隔时间，单位毫秒
      */
-    public ZRecyclerView setItemMinClickIntervalTime(long minClickIntervaltime) {
+    public ZRecyclerView setItemMinClickIntervalTime(long minClickIntervalTime) {
         this.minClickIntervaltime = minClickIntervaltime;
-        if (mWrapAdapter != null) {
-            if (mWrapAdapter.getAdapter() instanceof BaseRecyclerAdapter) {
-                ((BaseRecyclerAdapter) mWrapAdapter.getAdapter()).setItemMinClickIntervalTime(minClickIntervaltime);
+        if (wrapAdapter != null) {
+            if (wrapAdapter.getAdapter() instanceof BaseRecyclerAdapter) {
+                ((BaseRecyclerAdapter) wrapAdapter.getAdapter()).setItemMinClickIntervalTime(minClickIntervaltime);
             } else {
                 throw new IllegalArgumentException("adapter 必须继承BaseRecyclerAdapter 才能使用setItemMinClickIntervalTime");
             }
@@ -178,9 +182,10 @@ public class ZRecyclerView extends FrameLayout {
     }
 
     /**
-     * GridLayoutManager
+     * 设置网格布局管理器
      *
-     * @param isForce 如果已经设置了，是否强制设置
+     * @param isForce   如果已经设置了，是否强制设置
+     * @param spanCount 列数
      */
     public ZRecyclerView setGridLayout(boolean isForce, int spanCount) {
         if (isForce || getLayoutManager() == null || !(getLayoutManager() instanceof GridLayoutManager)) {
@@ -192,9 +197,10 @@ public class ZRecyclerView extends FrameLayout {
     }
 
     /**
-     * StaggeredGridLayoutManager
+     * 设置瀑布流布局管理器
      *
-     * @param isForce 如果已经设置了，是否强制设置
+     * @param isForce   如果已经设置了，是否强制设置
+     * @param spanCount 列数
      */
     public ZRecyclerView setStaggeredGridLayout(boolean isForce, int spanCount) {
         if (isForce || getLayoutManager() == null || !(getLayoutManager() instanceof StaggeredGridLayoutManager)) {
@@ -251,10 +257,10 @@ public class ZRecyclerView extends FrameLayout {
      * 获取设置的HeaderView的外层LinearLayout
      */
     public View getHeaderLayout() {
-        if (mWrapAdapter == null) {
+        if (wrapAdapter == null) {
             return null;
         } else {
-            return mWrapAdapter.getHeaderLayout();
+            return wrapAdapter.getHeaderLayout();
         }
     }
 
@@ -262,10 +268,10 @@ public class ZRecyclerView extends FrameLayout {
      * 获取设置的FooterView的外层LinearLayout
      */
     public View getFooterLayout() {
-        if (mWrapAdapter == null) {
+        if (wrapAdapter == null) {
             return null;
         } else {
-            return mWrapAdapter.getFooterLayout();
+            return wrapAdapter.getFooterLayout();
         }
     }
 
@@ -278,6 +284,8 @@ public class ZRecyclerView extends FrameLayout {
 
     /**
      * 设置自定义的HeaderView
+     *
+     * @param headerViewLayoutId 资源Id
      */
     public ZRecyclerView addHeaderView(Context context, int headerViewLayoutId) {
         return addHeaderView(context, headerViewLayoutId, -1);
@@ -285,6 +293,9 @@ public class ZRecyclerView extends FrameLayout {
 
     /**
      * 设置自定义的HeaderView
+     *
+     * @param headerViewLayoutId 资源Id
+     * @param index              headerView顺序
      */
     public ZRecyclerView addHeaderView(Context context, int headerViewLayoutId, int index) {
         return addHeaderView(LayoutInflater.from(context).inflate(headerViewLayoutId, null), index);
@@ -292,6 +303,8 @@ public class ZRecyclerView extends FrameLayout {
 
     /**
      * 设置自定义的HeaderView
+     *
+     * @param index headerView顺序
      */
     public ZRecyclerView addHeaderView(View headerView, int index) {
         if (headerView != null) {
@@ -304,8 +317,8 @@ public class ZRecyclerView extends FrameLayout {
             headerView.setTag(R.id.srv_reserved_ivew, "reservedView");
             listHeaderView.add(index, headerView);
 
-            if (mWrapAdapter != null) {
-                mWrapAdapter.addHeaderView(headerView, index);
+            if (wrapAdapter != null) {
+                wrapAdapter.addHeaderView(headerView, index);
                 isAddHeader = true;
             }
         }
@@ -347,8 +360,8 @@ public class ZRecyclerView extends FrameLayout {
             footerView.setTag(R.id.srv_reserved_ivew, "reservedView");
             listFooterView.add(index, footerView);
 
-            if (mWrapAdapter != null) {
-                mWrapAdapter.addFooterView(footerView, index);
+            if (wrapAdapter != null) {
+                wrapAdapter.addFooterView(footerView, index);
                 isAddFooter = true;
             }
         }
@@ -363,8 +376,8 @@ public class ZRecyclerView extends FrameLayout {
             }
         }
 
-        if (mWrapAdapter != null) {
-            mWrapAdapter.removeHeaderView(header);
+        if (wrapAdapter != null) {
+            wrapAdapter.removeHeaderView(header);
         }
         return this;
     }
@@ -375,8 +388,8 @@ public class ZRecyclerView extends FrameLayout {
             listHeaderView = null;
         }
 
-        if (mWrapAdapter != null) {
-            mWrapAdapter.removeAllHeaderView();
+        if (wrapAdapter != null) {
+            wrapAdapter.removeAllHeaderView();
         }
         return this;
     }
@@ -389,8 +402,8 @@ public class ZRecyclerView extends FrameLayout {
             }
         }
 
-        if (mWrapAdapter != null) {
-            mWrapAdapter.removeFooterView(footer);
+        if (wrapAdapter != null) {
+            wrapAdapter.removeFooterView(footer);
         }
         return this;
     }
@@ -401,8 +414,8 @@ public class ZRecyclerView extends FrameLayout {
             listFooterView = null;
         }
 
-        if (mWrapAdapter != null) {
-            mWrapAdapter.removeAllFooterView();
+        if (wrapAdapter != null) {
+            wrapAdapter.removeAllFooterView();
         }
         return this;
     }
@@ -445,8 +458,10 @@ public class ZRecyclerView extends FrameLayout {
      * 设置下拉刷新是否可用
      */
     public ZRecyclerView setIsRefreshEnabled(boolean enabled) {
-        mSwipeRefreshLayout.setEnabled(enabled);
-        isRefreshEnabled = enabled;
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setEnabled(enabled);
+            isRefreshEnabled = enabled;
+        }
         return this;
     }
 
@@ -545,13 +560,14 @@ public class ZRecyclerView extends FrameLayout {
      * @param gravity {@link RelativeLayout}  ex RelativeLayout.CENTER_IN_PARENT
      */
     public ZRecyclerView setEmptyView(View emptyView, int gravity) {
-        mEmptyViewContainer.removeAllViews();
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams
-                .WRAP_CONTENT);
-        if (gravity != 0) {
-            params.addRule(gravity);
+        if (mEmptyViewContainer != null) {
+            mEmptyViewContainer.removeAllViews();
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            if (gravity != 0) {
+                params.addRule(gravity);
+            }
+            mEmptyViewContainer.addView(emptyView, params);
         }
-        mEmptyViewContainer.addView(emptyView, params);
         return this;
     }
 
@@ -566,7 +582,10 @@ public class ZRecyclerView extends FrameLayout {
      * 返回的放置emptyView的RelativeLayout
      */
     public View getEmptyView() {
-        return mEmptyViewContainer.getChildCount() > 0 ? mEmptyViewContainer.getChildAt(0) : null;
+        if (mEmptyViewContainer != null) {
+            return mEmptyViewContainer.getChildCount() > 0 ? mEmptyViewContainer.getChildAt(0) : null;
+        }
+        return null;
     }
 
     /**
@@ -585,18 +604,25 @@ public class ZRecyclerView extends FrameLayout {
 
 
     public boolean isSwipeRefreshEnable() {
-        return mSwipeRefreshLayout.isEnabled();
+        if (mSwipeRefreshLayout != null) {
+            return mSwipeRefreshLayout.isEnabled();
+        }
+        return false;
     }
 
     public void setSwipeRefreshEnable(boolean enable) {
-        mSwipeRefreshLayout.setEnabled(enable);
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setEnabled(enable);
+        }
     }
 
     /**
      * 设置SwipeRefreshLayout的colorScheme
      */
     public ZRecyclerView setColorSchemeResources(int... colorResIds) {
-        mSwipeRefreshLayout.setColorSchemeResources(colorResIds);
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setColorSchemeResources(colorResIds);
+        }
         return this;
     }
 
@@ -612,7 +638,9 @@ public class ZRecyclerView extends FrameLayout {
      * 如果嵌套有viewpager等控件，需要设置isProceeConflict为true
      */
     public void setIsProceeConflict(boolean isProceeConflict) {
-        mSwipeRefreshLayout.setIsProceeConflict(isProceeConflict);
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setIsProceeConflict(isProceeConflict);
+        }
     }
 
     /**
@@ -629,12 +657,14 @@ public class ZRecyclerView extends FrameLayout {
      * 手动调用下拉刷新，有下拉效果
      */
     public void refreshWithPull() {
-        handler.postDelayed(() -> {
-            if (isRefreshEnabled) {
-                mSwipeRefreshLayout.setRefreshing(true);
-                refresh();
-            }
-        }, 300);
+        if (mSwipeRefreshLayout != null) {
+            handler.postDelayed(() -> {
+                if (isRefreshEnabled) {
+                    mSwipeRefreshLayout.setRefreshing(true);
+                    refresh();
+                }
+            }, 300);
+        }
     }
 
     /**
@@ -642,12 +672,14 @@ public class ZRecyclerView extends FrameLayout {
      * 如果需要加载数据和状态显示调用 {@link #refreshWithPull()}
      */
     public void setRefreshing(final boolean isRefresh) {
-        handler.post(() -> {
-            if (isRefreshEnabled) {
-                isRefreshing = isRefresh;
-                mSwipeRefreshLayout.setRefreshing(isRefresh);
-            }
-        });
+        if (mSwipeRefreshLayout != null) {
+            handler.post(() -> {
+                if (isRefreshEnabled) {
+                    isRefreshing = isRefresh;
+                    mSwipeRefreshLayout.setRefreshing(isRefresh);
+                }
+            });
+        }
     }
 
     /**
@@ -734,23 +766,23 @@ public class ZRecyclerView extends FrameLayout {
     }
 
     public void setAdapter(RecyclerView.Adapter adapter) {
-        if (mWrapAdapter != null && mWrapAdapter.getAdapter() != null && hasRegisterEmptyObserver) {
-            mWrapAdapter.getAdapter().unregisterAdapterDataObserver(mEmptyDataObserver);
+        if (wrapAdapter != null && wrapAdapter.getAdapter() != null && hasRegisterEmptyObserver) {
+            wrapAdapter.getAdapter().unregisterAdapterDataObserver(mEmptyDataObserver);
             hasRegisterEmptyObserver = false;
         }
 
-        mWrapAdapter = new WrapperRecyclerAdapter(adapter);
-        mWrapAdapter.setLoadMoreFooter(loadMoreFooter).setIsShowNoMore(isShowNoMore).setIsLoadMoreEnabled(isLoadMoreEnabled);
+        wrapAdapter = new WrapperRecyclerAdapter(adapter);
+        wrapAdapter.setLoadMoreFooter(loadMoreFooter).setIsShowNoMore(isShowNoMore).setIsLoadMoreEnabled(isLoadMoreEnabled);
 
         if (!isAddHeader) {
-            mWrapAdapter.setHeaderViews(listHeaderView);
+            wrapAdapter.setHeaderViews(listHeaderView);
         }
 
         if (!isAddFooter) {
-            mWrapAdapter.setFooterViews(listFooterView);
+            wrapAdapter.setFooterViews(listFooterView);
         }
 
-        mRecyclerView.setAdapter(mWrapAdapter);
+        mRecyclerView.setAdapter(wrapAdapter);
 
         setOnItemClickListener(itemClickListener);
         setOnItemLongClickListener(itemLongClickListener);
@@ -777,8 +809,8 @@ public class ZRecyclerView extends FrameLayout {
         super.onAttachedToWindow();
         
         /*设置emptyView的监听者*/
-        if (mWrapAdapter != null && mWrapAdapter.getAdapter() != null && !hasRegisterEmptyObserver && mEmptyDataObserver != null) {
-            mWrapAdapter.getAdapter().registerAdapterDataObserver(mEmptyDataObserver);
+        if (wrapAdapter != null && wrapAdapter.getAdapter() != null && !hasRegisterEmptyObserver && mEmptyDataObserver != null) {
+            wrapAdapter.getAdapter().registerAdapterDataObserver(mEmptyDataObserver);
             hasRegisterEmptyObserver = true;
         }
     }
@@ -788,8 +820,8 @@ public class ZRecyclerView extends FrameLayout {
         super.onDetachedFromWindow();
         
         /*注销监听者*/
-        if (mWrapAdapter != null && mWrapAdapter.getAdapter() != null && hasRegisterEmptyObserver) {
-            mWrapAdapter.getAdapter().unregisterAdapterDataObserver(mEmptyDataObserver);
+        if (wrapAdapter != null && wrapAdapter.getAdapter() != null && hasRegisterEmptyObserver) {
+            wrapAdapter.getAdapter().unregisterAdapterDataObserver(mEmptyDataObserver);
             hasRegisterEmptyObserver = false;
         }
     }
@@ -801,51 +833,51 @@ public class ZRecyclerView extends FrameLayout {
         @Override
         public void onChanged() {
             checkEmptyView();
-            mWrapAdapter.notifyDataSetChanged();
+            wrapAdapter.notifyDataSetChanged();
         }
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeInserted(mWrapAdapter.getHeaderLayout() == null ? positionStart : positionStart + 1, itemCount);
+            wrapAdapter.notifyItemRangeInserted(wrapAdapter.getHeaderLayout() == null ? positionStart : positionStart + 1, itemCount);
         }
 
         @Override
         public void onItemRangeRemoved(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeRemoved(mWrapAdapter.getHeaderLayout() == null ? positionStart : positionStart + 1, itemCount);
+            wrapAdapter.notifyItemRangeRemoved(wrapAdapter.getHeaderLayout() == null ? positionStart : positionStart + 1, itemCount);
             checkEmptyView();
         }
 
         @Override
         public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-            int from = mWrapAdapter.getHeaderLayout() == null ? fromPosition : fromPosition + 1;
-            int to = mWrapAdapter.getHeaderLayout() == null ? toPosition : toPosition + 1;
-            mWrapAdapter.notifyItemMoved(from, to);
+            int from = wrapAdapter.getHeaderLayout() == null ? fromPosition : fromPosition + 1;
+            int to = wrapAdapter.getHeaderLayout() == null ? toPosition : toPosition + 1;
+            wrapAdapter.notifyItemMoved(from, to);
         }
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeChanged(mWrapAdapter.getHeaderLayout() == null ? positionStart : positionStart + 1, itemCount);
+            wrapAdapter.notifyItemRangeChanged(wrapAdapter.getHeaderLayout() == null ? positionStart : positionStart + 1, itemCount);
             checkEmptyView();
         }
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
-            mWrapAdapter.notifyItemRangeChanged(mWrapAdapter.getHeaderLayout() == null ? positionStart : positionStart + 1, itemCount, payload);
+            wrapAdapter.notifyItemRangeChanged(wrapAdapter.getHeaderLayout() == null ? positionStart : positionStart + 1, itemCount, payload);
             checkEmptyView();
         }
 
         private void checkEmptyView() {
             if (mEmptyViewContainer != null && mEmptyViewContainer.getChildCount() > 0) {
-                if (mWrapAdapter.getAdapter().getItemCount() == 0) {
+                if (wrapAdapter.getAdapter().getItemCount() == 0) {
                     mEmptyViewContainer.setVisibility(View.VISIBLE);
 
                     //使emptyview居中（除headerview之外）
-                    if (mWrapAdapter.getHeaderLayout() != null && mEmptyViewContainer.getLayoutParams() instanceof MarginLayoutParams) {
-                        if (mWrapAdapter.getHeaderLayout().getHeight() == 0 && Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            mWrapAdapter.getHeaderLayout().measure(0, 0);
-                            ((MarginLayoutParams) mEmptyViewContainer.getLayoutParams()).topMargin = mWrapAdapter.getHeaderLayout().getMeasuredHeight();
+                    if (wrapAdapter.getHeaderLayout() != null && mEmptyViewContainer.getLayoutParams() instanceof MarginLayoutParams) {
+                        if (wrapAdapter.getHeaderLayout().getHeight() == 0 && Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                            wrapAdapter.getHeaderLayout().measure(0, 0);
+                            ((MarginLayoutParams) mEmptyViewContainer.getLayoutParams()).topMargin = wrapAdapter.getHeaderLayout().getMeasuredHeight();
                         } else {
-                            ((MarginLayoutParams) mEmptyViewContainer.getLayoutParams()).topMargin = mWrapAdapter.getHeaderLayout().getHeight();
+                            ((MarginLayoutParams) mEmptyViewContainer.getLayoutParams()).topMargin = wrapAdapter.getHeaderLayout().getHeight();
                         }
                     }
                 } else {
