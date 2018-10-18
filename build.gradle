@@ -1,16 +1,8 @@
-/*
- * *********************************************************
- *   author   colin
- *   company  telchina
- *   email    wanglin2046@126.com
- *   date     18-1-9 下午2:46
- * ********************************************************
- */
-
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
     repositories {
+        google()
         jcenter()
     }
     dependencies {
@@ -23,9 +15,9 @@ buildscript {
 
 allprojects {
     repositories {
+        google()
         jcenter()
         maven { url "https://jitpack.io" }
-        google()
     }
 }
 
