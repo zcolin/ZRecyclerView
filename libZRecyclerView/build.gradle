@@ -33,7 +33,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    provided "com.android.support:design:$supprotVersion"
+    provided "com.android.support:design:$supprotVersion" 
     provided "com.android.support:appcompat-v7:$supprotVersion"
     provided "com.android.support:recyclerview-v7:$supprotVersion"
 }

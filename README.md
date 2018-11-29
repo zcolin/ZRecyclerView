@@ -9,7 +9,7 @@ Feature
 3. 所有设置在ZRecyclerView中操作，不再在Adapter中进行操作.
 4. 支持滑动菜单.
 5. 解决android SwipeRefreshLayout和AppBarLayout冲突的问题.
-6. 仅使用recyclerview、appcompat-v7、design库编译，没有直接依赖，降低和调用者库冲突风险。
+6. 仅使用recyclerview、appcompat-v7、design库编译，没有直接依赖，降低和调用者库冲突风险。默认编译版本使用28.0.0
 
 Demo
 =
