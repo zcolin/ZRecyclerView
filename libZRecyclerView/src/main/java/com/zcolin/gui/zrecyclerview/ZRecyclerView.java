@@ -303,7 +303,7 @@ public class ZRecyclerView extends FrameLayout {
             listHeaderView.add(index, headerView);
 
             //如果已经添加了emptyView，则先移除，再添加，保证在最后
-            if (emptyViewContainer != headerView) {
+            if (emptyViewContainer != headerView && emptyViewContainer != null) {
                 listHeaderView.remove(emptyViewContainer);
                 listHeaderView.add(emptyViewContainer);
             }
