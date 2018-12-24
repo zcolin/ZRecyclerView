@@ -82,8 +82,10 @@ public class ZRecyclerView extends FrameLayout {
         mContext = context;
         View view = LayoutInflater.from(context).inflate(resId > 0 ? resId : R.layout.gui_zrecyclerview_zrecycler, null);
         mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_green_dark, android.R.color.holo_blue_dark, android.R.color.holo_orange_dark);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayoutOnRefresh(this));
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_green_dark, android.R.color.holo_blue_dark, android.R.color.holo_orange_dark);
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayoutOnRefresh(this));
+        }
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setVerticalScrollBarEnabled(true);
@@ -440,8 +442,10 @@ public class ZRecyclerView extends FrameLayout {
      * 设置下拉刷新是否可用
      */
     public ZRecyclerView setIsRefreshEnabled(boolean enabled) {
-        mSwipeRefreshLayout.setEnabled(enabled);
-        isRefreshEnabled = enabled;
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setEnabled(enabled);
+            isRefreshEnabled = enabled;
+        }
         return this;
     }
 
@@ -563,18 +567,25 @@ public class ZRecyclerView extends FrameLayout {
 
 
     public boolean isSwipeRefreshEnable() {
-        return mSwipeRefreshLayout.isEnabled();
+        if (mSwipeRefreshLayout != null) {
+            return mSwipeRefreshLayout.isEnabled();
+        }
+        return false;
     }
 
     public void setSwipeRefreshEnable(boolean enable) {
-        mSwipeRefreshLayout.setEnabled(enable);
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setEnabled(enable);
+        }
     }
 
     /**
      * 设置SwipeRefreshLayout的colorScheme
      */
     public ZRecyclerView setColorSchemeResources(int... colorResIds) {
-        mSwipeRefreshLayout.setColorSchemeResources(colorResIds);
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setColorSchemeResources(colorResIds);
+        }
         return this;
     }
 
@@ -590,7 +601,9 @@ public class ZRecyclerView extends FrameLayout {
      * 如果嵌套有viewpager等控件，需要设置isProceeConflict为true
      */
     public void setIsProceeConflict(boolean isProceeConflict) {
-        mSwipeRefreshLayout.setIsProceeConflict(isProceeConflict);
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setIsProceeConflict(isProceeConflict);
+        }
     }
 
     /**
@@ -607,12 +620,14 @@ public class ZRecyclerView extends FrameLayout {
      * 手动调用下拉刷新，有下拉效果
      */
     public void refreshWithPull() {
-        handler.postDelayed(() -> {
-            if (isRefreshEnabled) {
-                mSwipeRefreshLayout.setRefreshing(true);
-                refresh();
-            }
-        }, 300);
+        if (mSwipeRefreshLayout != null) {
+            handler.postDelayed(() -> {
+                if (isRefreshEnabled) {
+                    mSwipeRefreshLayout.setRefreshing(true);
+                    refresh();
+                }
+            }, 300);
+        }
     }
 
     /**
@@ -620,12 +635,14 @@ public class ZRecyclerView extends FrameLayout {
      * 如果需要加载数据和状态显示调用 {@link #refreshWithPull()}
      */
     public void setRefreshing(final boolean isRefresh) {
-        handler.post(() -> {
-            if (isRefreshEnabled) {
-                isRefreshing = isRefresh;
-                mSwipeRefreshLayout.setRefreshing(isRefresh);
-            }
-        });
+        if (mSwipeRefreshLayout != null) {
+            handler.post(() -> {
+                if (isRefreshEnabled) {
+                    isRefreshing = isRefresh;
+                    mSwipeRefreshLayout.setRefreshing(isRefresh);
+                }
+            });
+        }
     }
 
     /**
