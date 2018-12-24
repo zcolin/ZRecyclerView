@@ -21,6 +21,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -56,7 +57,7 @@ public class ZRecyclerView extends FrameLayout {
     private long minClickIntervaltime = 100; //ITEM点击的最小间隔
     private WrapperRecyclerAdapter mWrapAdapter;
 
-    private View                emptyView;
+    private FrameLayout         emptyViewContainer;
     private ILoadMoreFooter     loadMoreFooter;
     private RecyclerView        mRecyclerView;
     private ZSwipeRefreshLayout mSwipeRefreshLayout;
@@ -302,9 +303,9 @@ public class ZRecyclerView extends FrameLayout {
             listHeaderView.add(index, headerView);
 
             //如果已经添加了emptyView，则先移除，再添加，保证在最后
-            if (emptyView != null) {
-                listHeaderView.remove(emptyView);
-                listHeaderView.add(emptyView);
+            if (emptyViewContainer != headerView) {
+                listHeaderView.remove(emptyViewContainer);
+                listHeaderView.add(emptyViewContainer);
             }
 
             if (mWrapAdapter != null) {
@@ -525,7 +526,7 @@ public class ZRecyclerView extends FrameLayout {
      * 设置没有数据时显示的EmptyView
      */
     public ZRecyclerView setEmptyView(Context context, int layoutId) {
-        emptyView = LayoutInflater.from(context).inflate(layoutId, null);
+        View emptyView = LayoutInflater.from(context).inflate(layoutId, null);
         return setEmptyView(emptyView);
     }
 
@@ -533,15 +534,16 @@ public class ZRecyclerView extends FrameLayout {
      * 设置没有数据时显示的EmptyView
      */
     public ZRecyclerView setEmptyView(View emptyView) {
-        if (this.emptyView != null) {
-            removeHeaderView(this.emptyView);
+        if (emptyViewContainer == null) {
+            emptyViewContainer = new FrameLayout(getContext());
+            addHeaderView(emptyViewContainer);
         }
 
-        this.emptyView = emptyView;
-        if (this.emptyView != null) {
-            this.emptyView.setTag(R.id.zrecyclerview_empty_tag, "emptyView");
-            addHeaderView(this.emptyView);
+        if (emptyViewContainer.getChildCount() > 0) {
+            emptyViewContainer.removeAllViews();
         }
+
+        emptyViewContainer.addView(emptyView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         return this;
     }
 
@@ -549,12 +551,8 @@ public class ZRecyclerView extends FrameLayout {
      * 返回的放置emptyView的RelativeLayout
      */
     public View getEmptyView() {
-        if (listHeaderView != null && listHeaderView.size() > 0) {
-            for (View view : listHeaderView) {
-                if (view.getTag(R.id.zrecyclerview_empty_tag) != null) {
-                    return view;
-                }
-            }
+        if (emptyViewContainer != null && emptyViewContainer.getChildCount() > 0) {
+            return emptyViewContainer.getChildAt(0);
         }
         return null;
     }
@@ -838,11 +836,11 @@ public class ZRecyclerView extends FrameLayout {
         }
 
         private void checkEmptyView() {
-            if (emptyView != null) {
+            if (emptyViewContainer != null) {
                 if (mWrapAdapter.getAdapter().getItemCount() == 0) {
-                    emptyView.setVisibility(View.VISIBLE);
+                    emptyViewContainer.setVisibility(View.VISIBLE);
                 } else {
-                    emptyView.setVisibility(View.GONE);
+                    emptyViewContainer.setVisibility(View.GONE);
                 }
             }
         }
