@@ -837,11 +837,11 @@ public class ZRecyclerView extends FrameLayout {
         }
 
         private void checkEmptyView() {
-            if (emptyViewContainer != null) {
+            if (emptyViewContainer != null && emptyViewContainer.getChildCount() > 0) {
                 if (mWrapAdapter.getAdapter().getItemCount() == 0) {
-                    emptyViewContainer.setVisibility(View.VISIBLE);
+                    emptyViewContainer.getChildAt(0).setVisibility(View.VISIBLE);
                 } else {
-                    emptyViewContainer.setVisibility(View.GONE);
+                    emptyViewContainer.getChildAt(0).setVisibility(View.GONE);
                 }
             }
         }
