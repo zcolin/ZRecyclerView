@@ -544,7 +544,7 @@ public class ZRecyclerView extends FrameLayout {
         }
 
         emptyViewContainer.addView(emptyView, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams
-                .MATCH_PARENT));
+                .WRAP_CONTENT));
         return this;
     }
 
