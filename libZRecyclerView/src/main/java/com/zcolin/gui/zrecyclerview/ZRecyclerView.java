@@ -301,6 +301,12 @@ public class ZRecyclerView extends FrameLayout {
             headerView.setTag(R.id.srv_reserved_ivew, "reservedView");
             listHeaderView.add(index, headerView);
 
+            //如果已经添加了emptyView，则先移除，再添加，保证在最后
+            if (emptyView != null) {
+                listHeaderView.remove(emptyView);
+                listHeaderView.add(emptyView);
+            }
+
             if (mWrapAdapter != null) {
                 mWrapAdapter.addHeaderView(headerView, index);
                 isAddHeader = true;
@@ -532,8 +538,10 @@ public class ZRecyclerView extends FrameLayout {
         }
 
         this.emptyView = emptyView;
-        this.emptyView.setTag(R.id.zrecyclerview_empty_tag, "emptyView");
-        addHeaderView(this.emptyView, 100);
+        if (this.emptyView != null) {
+            this.emptyView.setTag(R.id.zrecyclerview_empty_tag, "emptyView");
+            addHeaderView(this.emptyView);
+        }
         return this;
     }
 
