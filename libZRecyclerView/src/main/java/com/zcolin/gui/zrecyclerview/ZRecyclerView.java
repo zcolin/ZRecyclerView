@@ -21,9 +21,9 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.zcolin.gui.zrecyclerview.loadmorefooter.DefLoadMoreFooter;
 import com.zcolin.gui.zrecyclerview.loadmorefooter.ILoadMoreFooter;
@@ -57,7 +57,7 @@ public class ZRecyclerView extends FrameLayout {
     private long minClickIntervaltime = 100; //ITEM点击的最小间隔
     private WrapperRecyclerAdapter mWrapAdapter;
 
-    private FrameLayout         emptyViewContainer;
+    private RelativeLayout      emptyViewContainer;
     private ILoadMoreFooter     loadMoreFooter;
     private RecyclerView        mRecyclerView;
     private ZSwipeRefreshLayout mSwipeRefreshLayout;
@@ -535,7 +535,7 @@ public class ZRecyclerView extends FrameLayout {
      */
     public ZRecyclerView setEmptyView(View emptyView) {
         if (emptyViewContainer == null) {
-            emptyViewContainer = new FrameLayout(getContext());
+            emptyViewContainer = new RelativeLayout(getContext());
             addHeaderView(emptyViewContainer);
         }
 
@@ -543,7 +543,8 @@ public class ZRecyclerView extends FrameLayout {
             emptyViewContainer.removeAllViews();
         }
 
-        emptyViewContainer.addView(emptyView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        emptyViewContainer.addView(emptyView, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams
+                .MATCH_PARENT));
         return this;
     }
 
