@@ -12,4 +12,5 @@
     <item name="srv_smContentView" type="id"/>
     <item name="srv_smMenuView" type="id"/>
     <item name="srv_reserved_ivew" type="id"/>
+    <item name="zrecyclerview_empty_tag" type="id"/>
 </resources>
