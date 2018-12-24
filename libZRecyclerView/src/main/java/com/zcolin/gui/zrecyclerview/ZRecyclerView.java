@@ -535,16 +535,14 @@ public class ZRecyclerView extends FrameLayout {
      */
     public ZRecyclerView setEmptyView(View emptyView) {
         if (emptyViewContainer == null) {
-            emptyViewContainer = new RelativeLayout(getContext());
+            emptyViewContainer = new RelativeLayout(mContext);
             addHeaderView(emptyViewContainer);
         }
 
         if (emptyViewContainer.getChildCount() > 0) {
             emptyViewContainer.removeAllViews();
         }
-
-        emptyViewContainer.addView(emptyView, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams
-                .WRAP_CONTENT));
+        emptyViewContainer.addView(emptyView);
         return this;
     }
 
