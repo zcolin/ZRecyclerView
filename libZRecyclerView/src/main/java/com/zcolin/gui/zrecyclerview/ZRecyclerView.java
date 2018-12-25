@@ -302,12 +302,6 @@ public class ZRecyclerView extends FrameLayout {
             headerView.setTag(R.id.zrecyclerview_empty_tag, "emptyView");
             listHeaderView.add(index, headerView);
 
-            //如果已经添加了emptyView，则先移除，再添加，保证在最后
-            if (emptyView != headerView && emptyView != null) {
-                listHeaderView.remove(emptyView);
-                listHeaderView.add(emptyView);
-            }
-
             if (mWrapAdapter != null) {
                 mWrapAdapter.addHeaderView(headerView, index);
                 isAddHeader = true;
@@ -542,7 +536,21 @@ public class ZRecyclerView extends FrameLayout {
      * 返回的放置emptyView的RelativeLayout
      */
     public View getEmptyView() {
-        return this.emptyView;
+        return emptyView;
+    }
+
+    /**
+     * 返回已经添加的emptyView
+     */
+    private View getAddedEmptyView() {
+        if (listHeaderView != null && listHeaderView.size() > 0) {
+            for (View view : listHeaderView) {
+                if (view.getTag(R.id.zrecyclerview_empty_tag) != null) {
+                    return view;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -825,24 +833,14 @@ public class ZRecyclerView extends FrameLayout {
 
         private void checkEmptyView() {
             if (emptyView != null) {
-                if (mWrapAdapter.getAdapter().getItemCount() == 0 && !isEmptyViewAdd()) {
+                View addedEmptyView = getAddedEmptyView();
+                if (mWrapAdapter.getAdapter().getItemCount() == 0 && addedEmptyView == null) {
                     addHeaderView(emptyView);
-                } else if (mWrapAdapter.getAdapter().getItemCount() > 0 && isEmptyViewAdd()) {
-                    removeHeaderView(emptyView);
+                } else if (mWrapAdapter.getAdapter().getItemCount() > 0 && addedEmptyView != null) {
+                    removeHeaderView(addedEmptyView);
                 }
             }
         }
-    }
-
-    private boolean isEmptyViewAdd() {
-        if (listHeaderView != null && listHeaderView.size() > 0) {
-            for (View view : listHeaderView) {
-                if (view.getTag(R.id.zrecyclerview_empty_tag) != null) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     class SwipeRefreshLayoutOnRefresh implements ZSwipeRefreshLayout.OnRefreshListener {
