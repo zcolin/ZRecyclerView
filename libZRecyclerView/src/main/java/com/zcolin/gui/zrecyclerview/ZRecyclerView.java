@@ -299,6 +299,7 @@ public class ZRecyclerView extends FrameLayout {
             index = index < 0 ? listHeaderView.size() : index;
             index = index > listHeaderView.size() ? listHeaderView.size() : index;
             headerView.setTag(R.id.srv_reserved_ivew, "reservedView");
+            headerView.setTag(R.id.zrecyclerview_empty_tag, "emptyView");
             listHeaderView.add(index, headerView);
 
             //如果已经添加了emptyView，则先移除，再添加，保证在最后
@@ -824,13 +825,24 @@ public class ZRecyclerView extends FrameLayout {
 
         private void checkEmptyView() {
             if (emptyView != null) {
-                if (mWrapAdapter.getAdapter().getItemCount() == 0 && emptyView.getParent() == null) {
+                if (mWrapAdapter.getAdapter().getItemCount() == 0 && !isEmptyViewAdd()) {
                     addHeaderView(emptyView);
-                } else if (mWrapAdapter.getAdapter().getItemCount() > 0 && emptyView.getParent() != null) {
+                } else if (mWrapAdapter.getAdapter().getItemCount() > 0 && isEmptyViewAdd()) {
                     removeHeaderView(emptyView);
                 }
             }
         }
+    }
+
+    private boolean isEmptyViewAdd() {
+        if (listHeaderView != null && listHeaderView.size() > 0) {
+            for (View view : listHeaderView) {
+                if (view.getTag(R.id.zrecyclerview_empty_tag) != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     class SwipeRefreshLayoutOnRefresh implements ZSwipeRefreshLayout.OnRefreshListener {
