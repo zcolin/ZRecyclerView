@@ -826,7 +826,7 @@ public class ZRecyclerView extends FrameLayout {
             if (emptyView != null) {
                 if (mWrapAdapter.getAdapter().getItemCount() == 0 && emptyView.getParent() == null) {
                     addHeaderView(emptyView);
-                } else if (mWrapAdapter.getAdapter().getItemCount() > 0) {
+                } else if (mWrapAdapter.getAdapter().getItemCount() > 0 && emptyView.getParent() != null) {
                     removeHeaderView(emptyView);
                 }
             }
