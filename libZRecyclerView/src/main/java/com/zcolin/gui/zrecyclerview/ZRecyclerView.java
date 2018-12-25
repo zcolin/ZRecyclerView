@@ -299,7 +299,6 @@ public class ZRecyclerView extends FrameLayout {
             index = index < 0 ? listHeaderView.size() : index;
             index = index > listHeaderView.size() ? listHeaderView.size() : index;
             headerView.setTag(R.id.srv_reserved_ivew, "reservedView");
-            headerView.setTag(R.id.zrecyclerview_empty_tag, "emptyView");
             listHeaderView.add(index, headerView);
 
             if (mWrapAdapter != null) {
@@ -529,6 +528,7 @@ public class ZRecyclerView extends FrameLayout {
      */
     public ZRecyclerView setEmptyView(View emptyView) {
         this.emptyView = emptyView;
+        this.emptyView.setTag(R.id.zrecyclerview_empty_tag, "emptyView");
         return this;
     }
 
