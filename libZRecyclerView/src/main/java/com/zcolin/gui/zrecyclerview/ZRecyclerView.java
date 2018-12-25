@@ -23,7 +23,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.zcolin.gui.zrecyclerview.loadmorefooter.DefLoadMoreFooter;
 import com.zcolin.gui.zrecyclerview.loadmorefooter.ILoadMoreFooter;
@@ -57,7 +56,7 @@ public class ZRecyclerView extends FrameLayout {
     private long minClickIntervaltime = 100; //ITEM点击的最小间隔
     private WrapperRecyclerAdapter mWrapAdapter;
 
-    private RelativeLayout      emptyViewContainer;
+    private View                emptyView;
     private ILoadMoreFooter     loadMoreFooter;
     private RecyclerView        mRecyclerView;
     private ZSwipeRefreshLayout mSwipeRefreshLayout;
@@ -303,9 +302,9 @@ public class ZRecyclerView extends FrameLayout {
             listHeaderView.add(index, headerView);
 
             //如果已经添加了emptyView，则先移除，再添加，保证在最后
-            if (emptyViewContainer != headerView && emptyViewContainer != null) {
-                listHeaderView.remove(emptyViewContainer);
-                listHeaderView.add(emptyViewContainer);
+            if (emptyView != headerView && emptyView != null) {
+                listHeaderView.remove(emptyView);
+                listHeaderView.add(emptyView);
             }
 
             if (mWrapAdapter != null) {
@@ -534,15 +533,7 @@ public class ZRecyclerView extends FrameLayout {
      * 设置没有数据时显示的EmptyView
      */
     public ZRecyclerView setEmptyView(View emptyView) {
-        if (emptyViewContainer == null) {
-            emptyViewContainer = new RelativeLayout(mContext);
-            addHeaderView(emptyViewContainer);
-        }
-
-        if (emptyViewContainer.getChildCount() > 0) {
-            emptyViewContainer.removeAllViews();
-        }
-        emptyViewContainer.addView(emptyView);
+        this.emptyView = emptyView;
         return this;
     }
 
@@ -550,10 +541,7 @@ public class ZRecyclerView extends FrameLayout {
      * 返回的放置emptyView的RelativeLayout
      */
     public View getEmptyView() {
-        if (emptyViewContainer != null && emptyViewContainer.getChildCount() > 0) {
-            return emptyViewContainer.getChildAt(0);
-        }
-        return null;
+        return this.emptyView;
     }
 
     /**
@@ -835,11 +823,11 @@ public class ZRecyclerView extends FrameLayout {
         }
 
         private void checkEmptyView() {
-            if (emptyViewContainer != null && emptyViewContainer.getChildCount() > 0) {
+            if (emptyView != null) {
                 if (mWrapAdapter.getAdapter().getItemCount() == 0) {
-                    emptyViewContainer.getChildAt(0).setVisibility(View.VISIBLE);
+                    addHeaderView(emptyView);
                 } else {
-                    emptyViewContainer.getChildAt(0).setVisibility(View.GONE);
+                    removeHeaderView(emptyView);
                 }
             }
         }
