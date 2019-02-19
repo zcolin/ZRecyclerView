@@ -1,0 +1,38 @@
+@startuml
+
+
+interface ILoadMoreFooter
+
+ZRecyclerView <|-- ZSwipeMenuRecyclerView
+RecyclerView$ItemDecoration <|-- ZRecycleViewDivider
+RecyclerView$OnScrollListener <|-- RecyclerViewOnScroll
+
+ILoadMoreFooter <|.. DefLoadMoreFooter
+ZRecyclerView --> ILoadMoreFooter
+ZRecyclerView --> RecyclerView
+ZRecyclerView ..> ZRecycleViewDivider
+ZRecyclerView ..> RecyclerViewOnScroll
+ZRecyclerView --> WrapperRecyclerAdapter
+
+RecyclerView <|-- SwipeMenuRecyclerView
+SwipeMenuRecyclerView --> SwipeMenuLayout
+ZSwipeMenuRecyclerView --> SwipeMenuRecyclerView
+
+RecyclerView$Adapter <|-- WrapperRecyclerAdapter
+RecyclerView$Adapter <|--- BaseRecyclerAdapter
+WrapperRecyclerAdapter --> RecyclerView$Adapter
+
+interface ILoadMoreFooter {
+    void onReset();
+    void onLoading();
+    void onComplete();
+    void onNoMore();
+    void setIsShowNoMore(boolean isShow);
+    View getFootView();
+}
+abstract class BaseRecyclerAdapter<T>{
+    abstract int getItemLayoutId(int viewType);
+    abstract void setUpData(CommonHolder holder, int position, int viewType, T data);
+}
+
+@enduml
