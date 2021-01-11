@@ -1,18 +1,8 @@
-/*
- * *********************************************************
- *   author   colin
- *   company  telchina
- *   email    wanglin2046@126.com
- *   date     18-1-9 下午2:46
- * ********************************************************
- */
-
 package com.zcolin.zrecyclerdemo;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -24,12 +14,14 @@ import com.zcolin.zrecyclerdemo.adapter.ZRecyclerAdapter;
 
 import java.util.ArrayList;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     private ZRecyclerView    recyclerView;
     private ZRecyclerAdapter recyclerAdapter;
     private View             headerView2;
-    private int mPage = 1;
+    private int              mPage = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
         //recyclerView.setLoadMoreFooter(customview implements ILoadMoreFooter);   //设置自定义的加载Footer
         //recyclerView.setLoadMoreText("正在加载...", "正在加载...", "*****已加载全部*****");//设置加载文字
         //recyclerView.addDefaultItemDecoration();//增加默认分割线
-        recyclerView.setOnItemClickListener((BaseRecyclerAdapter.OnItemClickListener<String>) (covertView, position, data) -> {
+        recyclerView.setOnItemClickListener((BaseRecyclerAdapter.OnItemClickListener<String>) (covertView, position,
+                data) -> {
             Toast.makeText(MainActivity.this, data, Toast.LENGTH_SHORT).show();
             if (position == 0) {
                 Intent intent = new Intent(MainActivity.this, ScrollViewLayoutActivity.class);
@@ -90,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        recyclerView.setOnItemLongClickListener((BaseRecyclerAdapter.OnItemLongClickListener<String>) (covertView, position, data) -> {
+        recyclerView.setOnItemLongClickListener((BaseRecyclerAdapter.OnItemLongClickListener<String>) (covertView,
+                position, data) -> {
             recyclerAdapter.getDatas().remove(position);
             recyclerAdapter.notifyItemRemoved(position);
             recyclerAdapter.notifyItemRangeChanged(position, recyclerAdapter.getDatas().size() - position);

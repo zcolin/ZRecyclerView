@@ -1,22 +1,14 @@
-/*
- * *********************************************************
- *   author   colin
- *   company  telchina
- *   email    wanglin2046@126.com
- *   date     18-1-9 下午2:46
- * ********************************************************
- */
-
 package com.zcolin.zrecyclerdemo;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.zcolin.gui.zrecyclerview.ZRecyclerView;
 import com.zcolin.zrecyclerdemo.adapter.ZRecyclerAdapter;
 
 import java.util.ArrayList;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class EmptyViewLayoutActivity extends AppCompatActivity {
 
@@ -45,9 +37,10 @@ public class EmptyViewLayoutActivity extends AppCompatActivity {
         if (recyclerAdapter == null) {
             recyclerAdapter = new ZRecyclerAdapter();
             recyclerAdapter.addDatas(list);
-            recyclerAdapter.setOnItemClickListener((covertView, position, data) -> Toast.makeText(EmptyViewLayoutActivity.this, position + ":" + data, Toast
-                    .LENGTH_SHORT)
-                                                                                        .show());
+            recyclerAdapter.setOnItemClickListener((covertView, position, data) -> Toast.makeText(
+                    EmptyViewLayoutActivity.this,
+                    position + ":" + data,
+                    Toast.LENGTH_SHORT).show());
             recyclerView.setAdapter(recyclerAdapter);
         } else {
             if (isClear) {

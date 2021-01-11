@@ -20,9 +20,7 @@ Demo
 app的build.gradle中添加
 ```
 dependencies {
-    implementation "com.android.support:design:你的依赖版本号"
-    implementation "com.android.support:appcompat-v7:你的依赖版本号"
-    implementation "com.android.support:recyclerview-v7:你的依赖版本号"
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.github.zcolin:ZRecyclerView:latest.release'
 }
 ```

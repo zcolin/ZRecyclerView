@@ -1,17 +1,7 @@
-/*
- * *********************************************************
- *   author   colin
- *   company  telchina
- *   email    wanglin2046@126.com
- *   date     18-1-9 下午2:46
- * ********************************************************
- */
-
 package com.zcolin.zrecyclerdemo;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.zcolin.gui.zrecyclerview.BaseRecyclerAdapter;
@@ -20,11 +10,13 @@ import com.zcolin.zrecyclerdemo.adapter.ZRecyclerAdapter;
 
 import java.util.ArrayList;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class StaggeredLayoutActivity extends AppCompatActivity {
 
     private ZRecyclerView    recyclerView;
     private ZRecyclerAdapter recyclerAdapter;
-    private int mPage = 1;
+    private int              mPage = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +29,10 @@ public class StaggeredLayoutActivity extends AppCompatActivity {
         recyclerView.setEmptyView(this, R.layout.view_recycler_empty);
         recyclerView.addHeaderView(this, R.layout.view_recyclerheader);
         recyclerView.addFooterView(this, R.layout.view_recyclerfooter);
-        recyclerView.setOnItemClickListener((BaseRecyclerAdapter.OnItemClickListener<String>) (covertView, position, data) -> Toast.makeText
-                (StaggeredLayoutActivity.this, data, Toast.LENGTH_SHORT)
-                                                                                                                                   .show());
+        recyclerView.setOnItemClickListener((BaseRecyclerAdapter.OnItemClickListener<String>) (covertView, position,
+                data) -> Toast
+                .makeText(StaggeredLayoutActivity.this, data, Toast.LENGTH_SHORT)
+                .show());
 
         notifyData(new ArrayList<>(), false);
         recyclerView.refreshWithPull();

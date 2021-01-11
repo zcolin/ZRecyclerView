@@ -1,28 +1,20 @@
-/*
- * *********************************************************
- *   author   colin
- *   company  telchina
- *   email    wanglin2046@126.com
- *   date     18-1-9 下午2:46
- * ********************************************************
- */
-
 package com.zcolin.zrecyclerdemo;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 
 import com.zcolin.gui.zrecyclerview.ZRecyclerView;
 import com.zcolin.zrecyclerdemo.adapter.ZRecyclerAdapter;
 
 import java.util.ArrayList;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class DecorationActivity extends AppCompatActivity {
 
     private ZRecyclerView    recyclerView;
     private ZRecyclerAdapter recyclerAdapter;
-    private int mPage = 1;
+    private int              mPage = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

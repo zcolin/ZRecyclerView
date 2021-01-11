@@ -1,18 +1,8 @@
-/*
- * *********************************************************
- *   author   colin
- *   company  telchina
- *   email    wanglin2046@126.com
- *   date     18-1-9 下午2:46
- * ********************************************************
- */
-
 package com.zcolin.zrecyclerdemo;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -24,11 +14,13 @@ import com.zcolin.zrecyclerdemo.adapter.SwipeMenuRecyclerAdapter;
 
 import java.util.ArrayList;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class SwipeMenuLayoutActivity extends AppCompatActivity {
 
     private ZSwipeMenuRecyclerView   recyclerView;
     private SwipeMenuRecyclerAdapter recyclerAdapter;
-    private int mPage = 1;
+    private int                      mPage = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +32,10 @@ public class SwipeMenuLayoutActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new ZRecycleViewDivider(this, LinearLayout.HORIZONTAL, 1, Color.GREEN));
         recyclerView.getLoadMoreFooterView().setBackgroundColor(Color.BLUE);
         recyclerView.setLoadMoreTextColor(Color.WHITE);
-        recyclerView.setOnItemClickListener((BaseRecyclerAdapter.OnItemClickListener<String>) (covertView, position, data) -> Toast.makeText
-                (SwipeMenuLayoutActivity.this, data, Toast.LENGTH_SHORT)
-                                                                                                                                   .show());
+        recyclerView.setOnItemClickListener((BaseRecyclerAdapter.OnItemClickListener<String>) (covertView, position,
+                data) -> Toast
+                .makeText(SwipeMenuLayoutActivity.this, data, Toast.LENGTH_SHORT)
+                .show());
 
         recyclerView.refreshWithPull();
     }

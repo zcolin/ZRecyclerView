@@ -1,25 +1,17 @@
-/*
- * *********************************************************
- *   author   colin
- *   company  telchina
- *   email    wanglin2046@126.com
- *   date     18-1-9 下午2:46
- * ********************************************************
- */
-
 package com.zcolin.zrecyclerdemo;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.zcolin.gui.zrecyclerview.BaseRecyclerAdapter;
 import com.zcolin.gui.zrecyclerview.ZRecyclerView;
 import com.zcolin.zrecyclerdemo.adapter.ZRecyclerMultiTypeAdapter;
 
 import java.util.ArrayList;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 
 /**
@@ -29,7 +21,7 @@ public class DesignSupportActivity extends AppCompatActivity {
 
     private ZRecyclerView             recyclerView;
     private ZRecyclerMultiTypeAdapter mRecyclerViewAdapter;
-    private int mPage = 1;
+    private int                       mPage = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +31,10 @@ public class DesignSupportActivity extends AppCompatActivity {
     }
 
     private void init() {
-        findViewById(R.id.fab).setOnClickListener(v -> Snackbar.make(v, "FloatActionBar-click", Snackbar.LENGTH_LONG).setAction("toast", v1 -> {
+        findViewById(R.id.fab).setOnClickListener(v -> Snackbar.make(v, "FloatActionBar-click", Snackbar.LENGTH_LONG)
+                                                               .setAction("toast", v1 -> {
 
-        }));
+                                                               }));
 
 
         recyclerView = findViewById(R.id.pullLoadMoreRecyclerView);
@@ -51,9 +44,10 @@ public class DesignSupportActivity extends AppCompatActivity {
         recyclerView.addHeaderView(this, R.layout.view_recyclerheader);
 
         //下拉和到底加载的进度条样式，默认为 ProgressStyle.BallSpinFadeLoaderIndicator
-        recyclerView.setOnItemClickListener((BaseRecyclerAdapter.OnItemClickListener<String>) (covertView, position, data) -> Toast.makeText
-                (DesignSupportActivity.this, data, Toast.LENGTH_SHORT)
-                                                                                                                                   .show());
+        recyclerView.setOnItemClickListener((BaseRecyclerAdapter.OnItemClickListener<String>) (covertView, position,
+                data) -> Toast
+                .makeText(DesignSupportActivity.this, data, Toast.LENGTH_SHORT)
+                .show());
 
         //绑定Adapter
         notifyData(new ArrayList<>(), false);
