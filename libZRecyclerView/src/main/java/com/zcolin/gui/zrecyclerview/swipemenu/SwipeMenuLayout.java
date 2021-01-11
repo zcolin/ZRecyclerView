@@ -32,25 +32,25 @@ import com.zcolin.gui.zrecyclerview.R;
  */
 public class SwipeMenuLayout extends FrameLayout {
 
-    private static final int     STATE_CLOSE = 0;
-    private static final int     STATE_OPEN  = 1;
-    private static final boolean OVER_API_11 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
-    private int  mSwipeDirection;
-    private View mContentView;
-    private View mMenuView;
-    private int  mDownX;
-    private int state = STATE_CLOSE;
-    private GestureDetectorCompat mGestureDetector;
-    private OnGestureListener     mGestureListener;
-    private boolean               isFling;
-    private ScrollerCompat        mOpenScroller;
-    private ScrollerCompat        mCloseScroller;
-    private int                   mBaseX;
-    private Interpolator          mCloseInterpolator;
-    private Interpolator          mOpenInterpolator;
-    private ViewConfiguration     mViewConfiguration;
-    private boolean swipeEnable  = true;
-    private int     animDuration = 500;
+    private static final int                   STATE_CLOSE  = 0;
+    private static final int                   STATE_OPEN   = 1;
+    private static final boolean               OVER_API_11  = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+    private              int                   mSwipeDirection;
+    private              View                  mContentView;
+    private              View                  mMenuView;
+    private              int                   mDownX;
+    private              int                   state        = STATE_CLOSE;
+    private              GestureDetectorCompat mGestureDetector;
+    private              OnGestureListener     mGestureListener;
+    private              boolean               isFling;
+    private              ScrollerCompat        mOpenScroller;
+    private              ScrollerCompat        mCloseScroller;
+    private              int                   mBaseX;
+    private              Interpolator          mCloseInterpolator;
+    private              Interpolator          mOpenInterpolator;
+    private              ViewConfiguration     mViewConfiguration;
+    private              boolean               swipeEnable  = true;
+    private              int                   animDuration = 500;
 
     public SwipeMenuLayout(Context context) {
         this(context, null);
@@ -99,8 +99,9 @@ public class SwipeMenuLayout extends FrameLayout {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
-                if (velocityX > mViewConfiguration.getScaledMinimumFlingVelocity() || velocityY > mViewConfiguration.getScaledMinimumFlingVelocity())
+                if (velocityX > mViewConfiguration.getScaledMinimumFlingVelocity() || velocityY > mViewConfiguration.getScaledMinimumFlingVelocity()) {
                     isFling = true;
+                }
                 return isFling;
             }
         };
@@ -138,12 +139,15 @@ public class SwipeMenuLayout extends FrameLayout {
                 swipe(dis);
                 break;
             case MotionEvent.ACTION_UP:
-                if ((isFling || Math.abs(mDownX - event.getX()) > (mMenuView.getWidth() / 3)) && Math.signum(mDownX - event.getX()) == mSwipeDirection) {
+                if ((isFling || Math.abs(mDownX - event.getX()) > (mMenuView.getWidth() / 3)) && Math.signum(mDownX - event
+                        .getX()) == mSwipeDirection) {
                     smoothOpenMenu();
                 } else {
                     smoothCloseMenu();
                     return false;
                 }
+                break;
+            default:
                 break;
         }
         return true;
@@ -163,17 +167,25 @@ public class SwipeMenuLayout extends FrameLayout {
 
         LayoutParams lp = (LayoutParams) mContentView.getLayoutParams();
         int lGap = getPaddingLeft() + lp.leftMargin;
-        mContentView.layout(lGap - dis, mContentView.getTop(), lGap + (OVER_API_11 ? mContentView.getMeasuredWidthAndState() : mContentView.getMeasuredWidth
-                ()) - dis, mContentView
-                .getBottom());
+        mContentView.layout(lGap - dis,
+                            mContentView.getTop(),
+                            lGap + (OVER_API_11 ?
+                                    mContentView.getMeasuredWidthAndState() :
+                                    mContentView.getMeasuredWidth()) - dis,
+                            mContentView.getBottom());
 
         if (mSwipeDirection == SwipeMenuRecyclerView.DIRECTION_LEFT) {
-            mMenuView.layout(getMeasuredWidth() - dis, mMenuView.getTop(), getMeasuredWidth() + (OVER_API_11 ? mMenuView.getMeasuredWidthAndState() : 
-                    mMenuView.getMeasuredWidth()) - dis, mMenuView
-                    .getBottom());
+            mMenuView.layout(getMeasuredWidth() - dis,
+                             mMenuView.getTop(),
+                             getMeasuredWidth() + (OVER_API_11 ?
+                                                   mMenuView.getMeasuredWidthAndState() :
+                                                   mMenuView.getMeasuredWidth()) - dis,
+                             mMenuView.getBottom());
         } else {
-            mMenuView.layout(-(OVER_API_11 ? mMenuView.getMeasuredWidthAndState() : mMenuView.getMeasuredWidth()) - dis, mMenuView.getTop(), -dis, mMenuView
-                    .getBottom());
+            mMenuView.layout(-(OVER_API_11 ? mMenuView.getMeasuredWidthAndState() : mMenuView.getMeasuredWidth()) - dis,
+                             mMenuView.getTop(),
+                             -dis,
+                             mMenuView.getBottom());
         }
     }
 
@@ -248,20 +260,30 @@ public class SwipeMenuLayout extends FrameLayout {
         LayoutParams lp = (LayoutParams) mContentView.getLayoutParams();
         int lGap = getPaddingLeft() + lp.leftMargin;
         int tGap = getPaddingTop() + lp.topMargin;
-        mContentView.layout(lGap, tGap, lGap + (OVER_API_11 ? mContentView.getMeasuredWidthAndState() : mContentView.getMeasuredWidth()), tGap + (OVER_API_11
-                ? mContentView
-                .getMeasuredHeightAndState() : mContentView.getMeasuredHeight()));
+        mContentView.layout(lGap,
+                            tGap,
+                            lGap + (OVER_API_11 ?
+                                    mContentView.getMeasuredWidthAndState() :
+                                    mContentView.getMeasuredWidth()),
+                            tGap + (OVER_API_11 ?
+                                    mContentView.getMeasuredHeightAndState() :
+                                    mContentView.getMeasuredHeight()));
 
 
         lp = (LayoutParams) mMenuView.getLayoutParams();
         tGap = getPaddingTop() + lp.topMargin;
         if (mSwipeDirection == SwipeMenuRecyclerView.DIRECTION_LEFT) {
-            mMenuView.layout(getMeasuredWidth(), tGap, getMeasuredWidth() + (OVER_API_11 ? mMenuView.getMeasuredWidthAndState() : mMenuView.getMeasuredWidth
-                    ()), tGap + mMenuView
-                    .getMeasuredHeightAndState());
+            mMenuView.layout(getMeasuredWidth(),
+                             tGap,
+                             getMeasuredWidth() + (OVER_API_11 ?
+                                                   mMenuView.getMeasuredWidthAndState() :
+                                                   mMenuView.getMeasuredWidth()),
+                             tGap + mMenuView.getMeasuredHeightAndState());
         } else {
-            mMenuView.layout(-(OVER_API_11 ? mMenuView.getMeasuredWidthAndState() : mMenuView.getMeasuredWidth()), tGap, 0, tGap + mMenuView
-                    .getMeasuredHeightAndState());
+            mMenuView.layout(-(OVER_API_11 ? mMenuView.getMeasuredWidthAndState() : mMenuView.getMeasuredWidth()),
+                             tGap,
+                             0,
+                             tGap + mMenuView.getMeasuredHeightAndState());
         }
     }
 

@@ -29,7 +29,9 @@ public class ZSwipeRefreshLayout extends SwipeRefreshLayout {
 
     public ZSwipeRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setColorSchemeResources(android.R.color.holo_green_dark, android.R.color.holo_blue_dark, android.R.color.holo_orange_dark);
+        setColorSchemeResources(android.R.color.holo_green_dark,
+                                android.R.color.holo_blue_dark,
+                                android.R.color.holo_orange_dark);
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
@@ -72,6 +74,8 @@ public class ZSwipeRefreshLayout extends SwipeRefreshLayout {
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     mIsVpDragger = false; // 初始化标记
+                    break;
+                default:
                     break;
             }
         }

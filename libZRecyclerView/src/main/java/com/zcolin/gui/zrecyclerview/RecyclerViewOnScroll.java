@@ -51,8 +51,9 @@ public class RecyclerViewOnScroll extends RecyclerView.OnScrollListener {
         }
 
         if (firstVisibleItem == 0 || firstVisibleItem == RecyclerView.NO_POSITION) {
-            if (mPullLoadMoreRecyclerView.isRefreshEnabled())
+            if (mPullLoadMoreRecyclerView.isRefreshEnabled()) {
                 mPullLoadMoreRecyclerView.setSwipeRefreshEnable(true);
+            }
         } else {
             mPullLoadMoreRecyclerView.setSwipeRefreshEnable(false);
         }

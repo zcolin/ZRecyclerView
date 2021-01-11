@@ -200,9 +200,8 @@ public class SwipeMenuRecyclerView extends RecyclerView {
                         final float translationX = ViewCompat.getTranslationX(menuView);
                         final float translationY = ViewCompat.getTranslationY(menuView);
                         // intercept the up event when touched on the contentView of the opened SwipeMenuLayout
-                        if (!(x >= menuView.getLeft() + translationX && x <= menuView.getRight() + translationX && y >= menuView.getTop() + translationY && y
-                                <= menuView
-                                .getBottom() + translationY) && isCloseOnUpEvent) {
+                        if (!(x >= menuView.getLeft() + translationX && x <= menuView.getRight() + translationX && y >= menuView
+                                .getTop() + translationY && y <= menuView.getBottom() + translationY) && isCloseOnUpEvent) {
                             return true;
                         }
                     }
@@ -214,6 +213,8 @@ public class SwipeMenuRecyclerView extends RecyclerView {
                     ev.setAction(MotionEvent.ACTION_UP);
                     mTouchView.onSwipe(ev);
                 }
+                break;
+            default:
                 break;
         }
 
