@@ -12,11 +12,6 @@ package com.zcolin.gui.zrecyclerview;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,6 +19,10 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
+import com.google.android.flexbox.JustifyContent;
 import com.zcolin.gui.zrecyclerview.loadmorefooter.DefLoadMoreFooter;
 import com.zcolin.gui.zrecyclerview.loadmorefooter.ILoadMoreFooter;
 import com.zcolin.gui.zrecyclerview.swiperefreshlayout.SwipeRefreshLayout;
@@ -31,6 +30,12 @@ import com.zcolin.gui.zrecyclerview.swiperefreshlayout.ZSwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 
 /**
@@ -42,28 +47,28 @@ public class ZRecyclerView extends FrameLayout {
     private PullLoadMoreListener mPullLoadMoreListener;
     private ArrayList<View>      listHeaderView;
     private ArrayList<View>      listFooterView;
-    private boolean isRefreshEnabled  = true; //设置下拉刷新是否可用
-    private boolean isLoadMoreEnabled = true; //设置到底加载是否可用
-    private boolean isShowNoMore      = true; //是否显示 加载全部
+    private boolean              isRefreshEnabled  = true; //设置下拉刷新是否可用
+    private boolean              isLoadMoreEnabled = true; //设置到底加载是否可用
+    private boolean              isShowNoMore      = true; //是否显示 加载全部
 
-    private boolean isAddHeader;//如果在设置adapter之前设置,此变量为false,之后设置,则为true
-    private boolean isAddFooter;//如果在设置adapter之前设置,此变量为false,之后设置,则为true
-    private boolean isNoMore      = false;
-    private boolean isRefreshing  = false;
-    private boolean isLoadingData = false;
+    private boolean                                     isAddHeader;//如果在设置adapter之前设置,此变量为false,之后设置,则为true
+    private boolean                                     isAddFooter;//如果在设置adapter之前设置,此变量为false,之后设置,则为true
+    private boolean                                     isNoMore             = false;
+    private boolean                                     isRefreshing         = false;
+    private boolean                                     isLoadingData        = false;
     private BaseRecyclerAdapter.OnItemClickListener     itemClickListener;
     private BaseRecyclerAdapter.OnItemLongClickListener itemLongClickListener;
-    private long minClickIntervaltime = 100; //ITEM点击的最小间隔
-    private WrapperRecyclerAdapter mWrapAdapter;
+    private long                                        minClickIntervaltime = 100; //ITEM点击的最小间隔
+    private WrapperRecyclerAdapter                      mWrapAdapter;
 
-    private View                emptyView;
-    private ILoadMoreFooter     loadMoreFooter;
-    private RecyclerView        mRecyclerView;
-    private ZSwipeRefreshLayout mSwipeRefreshLayout;
-    private Context             mContext;
+    private View                             emptyView;
+    private ILoadMoreFooter                  loadMoreFooter;
+    private RecyclerView                     mRecyclerView;
+    private ZSwipeRefreshLayout              mSwipeRefreshLayout;
+    private Context                          mContext;
     private RecyclerView.AdapterDataObserver mEmptyDataObserver = new DataObserver();
-    private boolean hasRegisterEmptyObserver;
-    private Handler handler = new Handler(Looper.getMainLooper());
+    private boolean                          hasRegisterEmptyObserver;
+    private Handler                          handler            = new Handler(Looper.getMainLooper());
 
     public ZRecyclerView(Context context) {
         this(context, null);
@@ -80,10 +85,13 @@ public class ZRecyclerView extends FrameLayout {
 
     private void initView(Context context, int resId) {
         mContext = context;
-        View view = LayoutInflater.from(context).inflate(resId > 0 ? resId : R.layout.gui_zrecyclerview_zrecycler, null);
+        View view = LayoutInflater.from(context)
+                                  .inflate(resId > 0 ? resId : R.layout.gui_zrecyclerview_zrecycler, null);
         mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         if (mSwipeRefreshLayout != null) {
-            mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_green_dark, android.R.color.holo_blue_dark, android.R.color.holo_orange_dark);
+            mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_green_dark,
+                                                        android.R.color.holo_blue_dark,
+                                                        android.R.color.holo_orange_dark);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayoutOnRefresh(this));
         }
 
@@ -112,7 +120,8 @@ public class ZRecyclerView extends FrameLayout {
     }
 
     /**
-     * 此处设置OnItemClickListener是调用的{@link BaseRecyclerAdapter#setOnItemClickListener(BaseRecyclerAdapter.OnItemClickListener)}，
+     * 此处设置OnItemClickListener
+     * 是调用的{@link BaseRecyclerAdapter#setOnItemClickListener(BaseRecyclerAdapter.OnItemClickListener)}，
      * 此处的泛型类型必须和{@link BaseRecyclerAdapter}的相同
      */
     public <T> ZRecyclerView setOnItemClickListener(BaseRecyclerAdapter.OnItemClickListener<T> li) {
@@ -128,7 +137,8 @@ public class ZRecyclerView extends FrameLayout {
     }
 
     /**
-     * 此处设置OnItemLongClickListener是调用的{@link BaseRecyclerAdapter#setOnItemLongClickListener(BaseRecyclerAdapter.OnItemLongClickListener)}，
+     * 此处设置OnItemLongClickListener
+     * 是调用的{@link BaseRecyclerAdapter#setOnItemLongClickListener(BaseRecyclerAdapter.OnItemLongClickListener)}，
      * 此处的泛型类型必须和{@link BaseRecyclerAdapter}的相同
      */
     public <T> ZRecyclerView setOnItemLongClickListener(BaseRecyclerAdapter.OnItemLongClickListener<T> li) {
@@ -189,13 +199,34 @@ public class ZRecyclerView extends FrameLayout {
     }
 
     /**
+     * FlexBoxLayoutManager
+     *
+     * @param isForce 如果已经设置了，是否强制设置
+     */
+    public ZRecyclerView setFlexBoxLayout(boolean isForce) {
+        if (isForce || getLayoutManager() == null || !(getLayoutManager() instanceof ZFlexboxLayoutManager)) {
+            ZFlexboxLayoutManager flexboxLayoutManager = new ZFlexboxLayoutManager(getContext());
+            flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
+            // FlexWrap是否换行及换行方向：RecyclerView中使用FlexBoxLayout时，使用FlexWrap.WRAP（超过一行，自动正序换行），其他属性可能再RecyclerView中报错。
+            flexboxLayoutManager.setFlexWrap(FlexWrap.WRAP);
+            // FlexDirection按照主轴或交叉轴排列：此处根据常用业务使用FlexDirection.ROW（主轴排列）。
+            flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
+            flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
+            flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
+            mRecyclerView.setLayoutManager(flexboxLayoutManager);
+        }
+        return this;
+    }
+
+    /**
      * StaggeredGridLayoutManager
      *
      * @param isForce 如果已经设置了，是否强制设置
      */
     public ZRecyclerView setStaggeredGridLayout(boolean isForce, int spanCount) {
         if (isForce || getLayoutManager() == null || !(getLayoutManager() instanceof StaggeredGridLayoutManager)) {
-            StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(spanCount, LinearLayoutManager.VERTICAL);
+            StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(spanCount,
+                                                                                                   LinearLayoutManager.VERTICAL);
             mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
         }
         return this;
@@ -737,7 +768,9 @@ public class ZRecyclerView extends FrameLayout {
         }
 
         mWrapAdapter = new WrapperRecyclerAdapter(adapter);
-        mWrapAdapter.setLoadMoreFooter(loadMoreFooter).setIsShowNoMore(isShowNoMore).setIsLoadMoreEnabled(isLoadMoreEnabled);
+        mWrapAdapter.setLoadMoreFooter(loadMoreFooter)
+                    .setIsShowNoMore(isShowNoMore)
+                    .setIsLoadMoreEnabled(isLoadMoreEnabled);
 
         if (!isAddHeader) {
             mWrapAdapter.setHeaderViews(listHeaderView);
@@ -772,7 +805,7 @@ public class ZRecyclerView extends FrameLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        
+
         /*设置emptyView的监听者*/
         if (mWrapAdapter != null && mWrapAdapter.getAdapter() != null && !hasRegisterEmptyObserver && mEmptyDataObserver != null) {
             mWrapAdapter.getAdapter().registerAdapterDataObserver(mEmptyDataObserver);
@@ -783,7 +816,7 @@ public class ZRecyclerView extends FrameLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        
+
         /*注销监听者*/
         if (mWrapAdapter != null && mWrapAdapter.getAdapter() != null && hasRegisterEmptyObserver) {
             mWrapAdapter.getAdapter().unregisterAdapterDataObserver(mEmptyDataObserver);
@@ -803,12 +836,16 @@ public class ZRecyclerView extends FrameLayout {
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeInserted(mWrapAdapter.getHeaderLayout() == null ? positionStart : positionStart + 1, itemCount);
+            mWrapAdapter.notifyItemRangeInserted(mWrapAdapter.getHeaderLayout() == null ?
+                                                 positionStart :
+                                                 positionStart + 1, itemCount);
         }
 
         @Override
         public void onItemRangeRemoved(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeRemoved(mWrapAdapter.getHeaderLayout() == null ? positionStart : positionStart + 1, itemCount);
+            mWrapAdapter.notifyItemRangeRemoved(mWrapAdapter.getHeaderLayout() == null ?
+                                                positionStart :
+                                                positionStart + 1, itemCount);
             checkEmptyView();
         }
 
@@ -821,13 +858,17 @@ public class ZRecyclerView extends FrameLayout {
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeChanged(mWrapAdapter.getHeaderLayout() == null ? positionStart : positionStart + 1, itemCount);
+            mWrapAdapter.notifyItemRangeChanged(mWrapAdapter.getHeaderLayout() == null ?
+                                                positionStart :
+                                                positionStart + 1, itemCount);
             checkEmptyView();
         }
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
-            mWrapAdapter.notifyItemRangeChanged(mWrapAdapter.getHeaderLayout() == null ? positionStart : positionStart + 1, itemCount, payload);
+            mWrapAdapter.notifyItemRangeChanged(mWrapAdapter.getHeaderLayout() == null ?
+                                                positionStart :
+                                                positionStart + 1, itemCount, payload);
             checkEmptyView();
         }
 

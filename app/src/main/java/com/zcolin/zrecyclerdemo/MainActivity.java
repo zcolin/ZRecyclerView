@@ -79,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, DesignSupportActivity.class);
                 startActivity(intent);
             } else if (position == 8) {
+                Intent intent = new Intent(MainActivity.this, FlexBoxLayoutActivity.class);
+                startActivity(intent);
+            } else if (position == 9) {
                 recyclerView.removeHeaderView(headerView2);
             }
         });
@@ -150,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
             } else if (i == 7) {
                 dataList.add("DesignSupportActivity");
             } else if (i == 8) {
+                dataList.add("FlexBoxLayoutActivity");
+            } else if (i == 9) {
                 dataList.add("移除Header2");
             } else {
                 dataList.add(String.format("第%d条数据", i));

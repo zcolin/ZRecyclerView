@@ -36,6 +36,7 @@ dependencies {
     compileOnly 'com.google.android.material:material:1.0.0'
     compileOnly 'androidx.appcompat:appcompat:1.0.2'
     compileOnly 'androidx.recyclerview:recyclerview:1.0.0'
+    compileOnly 'com.google.android:flexbox:2.0.1'
 }
 
 apply from: './javadoc.gradle'
