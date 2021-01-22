@@ -21,6 +21,7 @@ app的build.gradle中添加
 ```
 dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.google.android:flexbox:2.0.1'
     implementation 'com.github.zcolin:ZRecyclerView:latest.release'
 }
 ```
